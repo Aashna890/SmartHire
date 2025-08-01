@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHire - Job Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <div class="bg-white border-b px-6 py-6">
+        <div class="flex justify-between items-start">
+            <div>
+                <h1 class="text-3xl font-bold text-blue-600 mb-2">Job Management</h1>
+                <p class="text-gray-600">Manage your job postings and track applications for Vicky Vilas Pukale</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <a href="recruiter_all_candidates.html">All Candidates</a>
+                </button>
+                <button id="openModal" class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Post New Job
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="px-6 py-6">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Jobs -->
+            <div class="bg-white rounded-lg border p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 mb-1">Total Jobs</p>
+                        <p class="text-3xl font-bold text-gray-900">2</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-briefcase text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Published -->
+            <div class="bg-white rounded-lg border p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 mb-1">Published</p>
+                        <p class="text-3xl font-bold text-gray-900">2</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Applications -->
+            <div class="bg-white rounded-lg border p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 mb-1">Total Applications</p>
+                        <p class="text-3xl font-bold text-blue-600">38</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-alt text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Avg. Applications -->
+            <div class="bg-white rounded-lg border p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 mb-1">Avg. Applications</p>
+                        <p class="text-3xl font-bold text-orange-500">19</p>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-orange-500 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Listings -->
+        <div class="space-y-6">
+            <!-- Senior Frontend Developer -->
+            <div class="bg-white rounded-lg border p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-2">
+                            <h3 class="text-xl font-semibold text-blue-600 mr-3">Senior Frontend Developer</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Published</span>
+                        </div>
+                        <div class="flex items-center text-gray-600 text-sm space-x-4 mb-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                San Francisco, CA
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-1"></i>
+                                full-time
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-dollar-sign mr-1"></i>
+                                $120,000 - $160,000
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-4">We're looking for a Senior Frontend Developer to join our growing team.</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">React</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">TypeScript</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">5+ years experience</span>
+                        </div>
+                    </div>
+                    <div class="text-right text-sm text-gray-500 ml-6">
+                        <p>Posted 2024-01-15</p>
+                        <div class="flex items-center justify-end mt-1 text-blue-600">
+                            <i class="fas fa-users mr-1"></i>
+                            <span>23 applications</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between pt-4 border-t">
+                    <div class="flex items-center space-x-4">
+                        <button class="flex items-center text-gray-700 hover:text-blue-600">
+                            <i class="fas fa-eye mr-2"></i>
+                            View Applications (23)
+                        </button>
+                        <button class="flex items-center text-gray-700 hover:text-blue-600">
+                            <i class="fas fa-edit mr-2"></i>
+                            Edit
+                        </button>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Manager -->
+            <div class="bg-white rounded-lg border p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-2">
+                            <h3 class="text-xl font-semibold text-blue-600 mr-3">Product Manager</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Published</span>
+                        </div>
+                        <div class="flex items-center text-gray-600 text-sm space-x-4 mb-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                Remote
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-1"></i>
+                                full-time
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-dollar-sign mr-1"></i>
+                                $100,000 - $140,000
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-4">Join our product team to shape the future of our platform.</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">Product Management</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">Agile</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">3+ years experience</span>
+                        </div>
+                    </div>
+                    <div class="text-right text-sm text-gray-500 ml-6">
+                        <p>Posted 2024-01-20</p>
+                        <div class="flex items-center justify-end mt-1 text-blue-600">
+                            <i class="fas fa-users mr-1"></i>
+                            <span>15 applications</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between pt-4 border-t">
+                    <div class="flex items-center space-x-4">
+                        <button class="flex items-center text-gray-700 hover:text-blue-600">
+                            <i class="fas fa-eye mr-2"></i>
+                            View Applications (15)
+                        </button>
+                        <button class="flex items-center text-gray-700 hover:text-blue-600">
+                            <i class="fas fa-edit mr-2"></i>
+                            Edit
+                        </button>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Overlay -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b">
+                <h2 class="text-xl font-semibold text-gray-900">Create New Job Posting</h2>
+                <button id="closeModal" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="border-b">
+                <nav class="flex">
+                    <button class="tab-btn active px-6 py-3 text-sm font-medium border-b-2 border-blue-500 text-blue-600" data-tab="basics">
+                        Basics
+                    </button>
+                    <button class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="details">
+                        Details
+                    </button>
+                    <button class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="requirements">
+                        Requirements
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-6 overflow-y-auto max-h-[60vh]">
+                <!-- Basics Tab -->
+                <div id="basics-tab" class="tab-content">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Job Title <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="Senior Software Engineer"
+                                   value="Senior Software Engineer">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Department</label>
+                                <input type="text" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       value="Engineering">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Job Type</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="full-time" selected>Full-time</option>
+                                    <option value="part-time">Part-time</option>
+                                    <option value="contract">Contract</option>
+                                    <option value="internship">Internship</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                            <input type="text" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="San Francisco, CA or Remote"
+                                   value="San Francisco, CA or Remote">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Salary Range</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       placeholder="Min salary">
+                                <input type="text" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       placeholder="Max salary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details Tab -->
+                <div id="details-tab" class="tab-content hidden">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Job Description <span class="text-red-500">*</span>
+                            </label>
+                            <textarea 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-32"
+                                placeholder="Describe the role, responsibilities, and what makes this opportunity exciting..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Requirements Tab -->
+                <div id="requirements-tab" class="tab-content hidden">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Requirements</label>
+                            <div id="requirements-list" class="space-y-2">
+                                <!-- Requirements will be added here dynamically -->
+                            </div>
+                            <div class="flex gap-2 mt-2">
+                                <input type="text" 
+                                       id="requirement-input"
+                                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       placeholder="Add a requirement...">
+                                <button id="add-requirement" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Benefits</label>
+                            <div id="benefits-list" class="space-y-2">
+                                <!-- Benefits will be added here dynamically -->
+                            </div>
+                            <div class="flex gap-2 mt-2">
+                                <input type="text" 
+                                       id="benefit-input"
+                                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       placeholder="Add a benefit...">
+                                <button id="add-benefit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex justify-between items-center p-6 bg-gray-50 border-t">
+                <button id="cancelBtn" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+                    Cancel
+                </button>
+                <div class="flex gap-3">
+                    <button id="saveDraftBtn" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
+                        Save as Draft
+                    </button>
+                    <button id="publishBtn" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                        Publish Job
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById('modal');
+        const openModalBtn = document.getElementById('openModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Requirements and Benefits functionality
+        const addRequirementBtn = document.getElementById('add-requirement');
+        const requirementInput = document.getElementById('requirement-input');
+        const requirementsList = document.getElementById('requirements-list');
+
+        const addBenefitBtn = document.getElementById('add-benefit');
+        const benefitInput = document.getElementById('benefit-input');
+        const benefitsList = document.getElementById('benefits-list');
+
+        // Open/Close modal
+        openModalBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        });
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Tab switching
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.dataset.tab;
+                
+                // Update active tab button
+                tabBtns.forEach(b => {
+                    b.classList.remove('active', 'border-blue-500', 'text-blue-600');
+                    b.classList.add('border-transparent', 'text-gray-500');
+                });
+                btn.classList.add('active', 'border-blue-500', 'text-blue-600');
+                btn.classList.remove('border-transparent', 'text-gray-500');
+                
+                // Show target tab content
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(targetTab + '-tab').classList.remove('hidden');
+            });
+        });
+
+        // Add requirement functionality
+        function addRequirement() {
+            const text = requirementInput.value.trim();
+            if (text) {
+                const requirementItem = document.createElement('div');
+                requirementItem.className = 'flex items-center justify-between p-2 bg-gray-50 rounded-md';
+                requirementItem.innerHTML = `
+                    <span class="text-sm text-gray-700">${text}</span>
+                    <button class="text-red-500 hover:text-red-700 text-sm" onclick="this.parentElement.remove()">
+                        Remove
+                    </button>
+                `;
+                requirementsList.appendChild(requirementItem);
+                requirementInput.value = '';
+            }
+        }
+
+        addRequirementBtn.addEventListener('click', addRequirement);
+        requirementInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addRequirement();
+            }
+        });
+
+        // Add benefit functionality
+        function addBenefit() {
+            const text = benefitInput.value.trim();
+            if (text) {
+                const benefitItem = document.createElement('div');
+                benefitItem.className = 'flex items-center justify-between p-2 bg-gray-50 rounded-md';
+                benefitItem.innerHTML = `
+                    <span class="text-sm text-gray-700">${text}</span>
+                    <button class="text-red-500 hover:text-red-700 text-sm" onclick="this.parentElement.remove()">
+                        Remove
+                    </button>
+                `;
+                benefitsList.appendChild(benefitItem);
+                benefitInput.value = '';
+            }
+        }
+
+        addBenefitBtn.addEventListener('click', addBenefit);
+        benefitInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addBenefit();
+            }
+        });
+
+        // Form submission handlers
+        document.getElementById('saveDraftBtn').addEventListener('click', () => {
+            alert('Job saved as draft!');
+            closeModal();
+        });
+
+        document.getElementById('publishBtn').addEventListener('click', () => {
+            alert('Job published successfully!');
+            closeModal();
+        });
+    </script>
+</body>
+</html>

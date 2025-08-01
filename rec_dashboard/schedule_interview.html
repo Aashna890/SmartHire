@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Interview - Sarah Johnson</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="candidate_applied_detail.html">
+                <button class="flex items-center text-gray-600 hover:text-gray-800 mb-4">
+                <i class="fas fa-arrow-left mr-2"></i>
+                <span class="text-sm font-medium">Back to Candidates</span>
+            </button>
+            </a>
+            
+            <div>
+                <h1 class="text-2xl font-bold text-blue-600 mb-1">Schedule Interview</h1>
+                <p class="text-gray-600">Schedule an interview with Sarah Johnson</p>
+            </div>
+        </div>
+
+        <div class="flex gap-8">
+            <!-- Main Content -->
+            <div class="flex-1 space-y-6">
+                <!-- Candidate Information -->
+                <div class="bg-white rounded-lg p-6 border border-gray-200">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-user mr-2 text-gray-400"></i>
+                        <h2 class="text-lg font-semibold text-gray-900">Candidate Information</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Name:</label>
+                            <p class="text-gray-900">Sarah Johnson</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Position:</label>
+                            <p class="text-gray-900">Senior Frontend Developer</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email:</label>
+                            <p class="text-blue-600">sarah.johnson@email.com</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Location:</label>
+                            <p class="text-gray-900">San Francisco, CA</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date & Time -->
+                <div class="bg-white rounded-lg p-6 border border-gray-200">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-calendar-alt mr-2 text-gray-400"></i>
+                        <h2 class="text-lg font-semibold text-gray-900">Date & Time</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Interview Date</label>
+                            <div class="relative">
+                                <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-calendar text-gray-400"></i>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Pick a date</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Time</label>
+                            <div class="relative">
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white">
+                                    <option value="">Select time</option>
+                                    <option value="09:00">09:00 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="14:00">02:00 PM</option>
+                                    <option value="15:00">03:00 PM</option>
+                                    <option value="16:00">04:00 PM</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-clock text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Duration (minutes)</label>
+                            <div class="relative">
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white">
+                                    <option value="60" selected>1 hour</option>
+                                    <option value="30">30 minutes</option>
+                                    <option value="45">45 minutes</option>
+                                    <option value="90">1.5 hours</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-chevron-down text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Interview Type</label>
+                            <div class="relative">
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white">
+                                    <option value="video" selected>Video Call</option>
+                                    <option value="phone">Phone Call</option>
+                                    <option value="in-person">In Person</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-chevron-down text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Video Meeting Link</label>
+                            <input 
+                                type="url" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="https://zoom.us/j/..."
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interviewers -->
+                <div class="bg-white rounded-lg p-6 border border-gray-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Interviewers</h2>
+                        <button class="flex items-center text-blue-600 hover:text-blue-700 font-medium">
+                            <i class="fas fa-plus mr-2"></i>
+                            Add Interviewer
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-medium text-gray-900 mb-3">Interviewer 1</h3>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                    <input 
+                                        type="text" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Full name"
+                                    >
+                                </div>
+                                <div>
+                                    <input 
+                                        type="email" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Email address"
+                                    >
+                                </div>
+                                <div>
+                                    <input 
+                                        type="text" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Role/Title"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interview Details -->
+                <div class="bg-white rounded-lg p-6 border border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Interview Details</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Agenda (optional)</label>
+                            <textarea 
+                                rows="4" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                placeholder="Outline what will be covered in the interview..."
+                            ></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Internal Notes (optional)</label>
+                            <textarea 
+                                rows="3" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                placeholder="Private notes for the hiring team..."
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="w-80">
+                <div class="bg-white rounded-lg p-6 border border-gray-200 sticky top-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Interview Summary</h3>
+                    
+                    <div class="space-y-4 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Candidate:</span>
+                            <span class="font-medium">Sarah Johnson</span>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Duration:</span>
+                            <span class="font-medium">60 minutes</span>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Type:</span>
+                            <span class="font-medium">Video</span>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Interviewers:</span>
+                            <span class="font-medium">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <h4 class="font-medium text-gray-900 mb-3">What happens next?</h4>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li class="flex items-start">
+                                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                Calendar invite will be sent to all participants
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                Candidate will receive interview details via email
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                Reminder notifications will be sent 24h before
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                Video meeting link will be included
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <button class="w-full mt-6 bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center">
+                        <i class="fas fa-calendar-plus mr-2"></i>
+                        Schedule Interview
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interviewer functionality
+        document.querySelector('button:has(.fa-plus)').addEventListener('click', function() {
+            const interviewersContainer = document.querySelector('.space-y-4');
+            const newInterviewer = document.createElement('div');
+            const interviewerCount = interviewersContainer.children.length + 1;
+            
+            newInterviewer.className = 'border border-gray-200 rounded-lg p-4';
+            newInterviewer.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-medium text-gray-900">Interviewer ${interviewerCount}</h3>
+                    <button class="text-red-500 hover:text-red-700" onclick="this.parentElement.parentElement.remove(); updateInterviewerCount();">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <input 
+                            type="text" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Full name"
+                        >
+                    </div>
+                    <div>
+                        <input 
+                            type="email" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Email address"
+                        >
+                    </div>
+                    <div>
+                        <input 
+                            type="text" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Role/Title"
+                        >
+                    </div>
+                </div>
+            `;
+            
+            interviewersContainer.appendChild(newInterviewer);
+            updateInterviewerCount();
+        });
+
+        // Update interviewer count in sidebar
+        function updateInterviewerCount() {
+            const count = document.querySelectorAll('.space-y-4 > div').length;
+            document.querySelector('.flex.justify-between:nth-child(4) .font-medium').textContent = count;
+        }
+
+        // Update duration in sidebar when changed
+        document.querySelector('select:has(option[value="60"])').addEventListener('change', function() {
+            const durationText = this.options[this.selectedIndex].text;
+            document.querySelector('.flex.justify-between:nth-child(2) .font-medium').textContent = durationText;
+        });
+
+        // Update type in sidebar when changed
+        document.querySelector('select:has(option[value="video"])').addEventListener('change', function() {
+            const typeText = this.options[this.selectedIndex].text;
+            document.querySelector('.flex.justify-between:nth-child(3) .font-medium').textContent = typeText;
+        });
+
+        // Initialize interviewer count
+        updateInterviewerCount();
+    </script>
+</body>
+</html>

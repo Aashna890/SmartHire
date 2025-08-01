@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunil Saini - SmartHire Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .circular-progress {
+            transform: rotate(-90deg);
+        }
+        .circular-progress circle {
+            transition: stroke-dashoffset 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="bg-blue-500 text-white p-3 rounded-lg mr-4">
+                        <i class="fas fa-user text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">Sunil Saini</h1>
+                        <div class="flex items-center space-x-4 text-sm text-gray-600 mt-1">
+                            <span>@s • @dfb</span>
+                            <span class="text-gray-500">Technical Score: 89%</span>
+                            <span class="text-blue-600">LeetCode Rating: 1847</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg text-sm">
+                        <a href="/dev_dashboard/application.html"><i class="fas fa-eye mr-2"></i>Applications</a>
+                    </button>
+                    <button class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                        <a href="/dev_dashboard/find_jobs.html"><i class="fas fa-search mr-2"></i>Find Jobs</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <!-- GitHub Repos -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-gray-600">GitHub Repos</span>
+                    <i class="fab fa-github text-blue-500 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-3">47</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-blue-500 h-2 rounded-full" style="width: 70%"></div>
+                </div>
+            </div>
+
+            <!-- Contributions -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-gray-600">Contributions</span>
+                    <i class="fas fa-chart-line text-green-500 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-3">1247</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-green-500 h-2 rounded-full" style="width: 85%"></div>
+                </div>
+            </div>
+
+            <!-- Problems Solved -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-gray-600">Problems Solved</span>
+                    <i class="fas fa-code text-orange-500 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-3">342</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-orange-500 h-2 rounded-full" style="width: 60%"></div>
+                </div>
+            </div>
+
+            <!-- Contest Rating -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-gray-600">Contest Rating</span>
+                    <i class="fas fa-trophy text-red-500 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-3">1847</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-red-500 h-2 rounded-full" style="width: 90%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Platform Toggle & Content -->
+                <div class="bg-white rounded-lg shadow-sm">
+                    <!-- Toggle Buttons -->
+                    <div class="flex border-b border-gray-200">
+                        <button id="githubTab" class="flex-1 flex items-center justify-center px-4 py-3 text-sm font-medium text-blue-600 border-b-2 border-blue-600 bg-blue-50">
+                            <i class="fab fa-github mr-2"></i>GitHub Activity
+                        </button>
+                        <button id="leetcodeTab" class="flex-1 flex items-center justify-center px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-800">
+                            <i class="fas fa-code mr-2"></i>LeetCode Performance
+                        </button>
+                    </div>
+
+                    <!-- GitHub Content -->
+                    <div id="githubContent" class="p-6">
+                        <!-- Language Distribution -->
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Language Distribution</h3>
+                            <p class="text-sm text-gray-600 mb-6">Programming languages used across your repositories</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-yellow-400 rounded-full mr-3"></div>
+                                        <span class="text-sm text-gray-700">JavaScript</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600 font-medium">45%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-400 h-2 rounded-full" style="width: 45%"></div>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                                        <span class="text-sm text-gray-700">TypeScript</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600 font-medium">25%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 25%"></div>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                                        <span class="text-sm text-gray-700">Python</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600 font-medium">15%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 15%"></div>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                                        <span class="text-sm text-gray-700">Java</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600 font-medium">10%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-red-500 h-2 rounded-full" style="width: 10%"></div>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-purple-500 rounded-full mr-3"></div>
+                                        <span class="text-sm text-gray-700">CSS</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600 font-medium">5%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-purple-500 h-2 rounded-full" style="width: 5%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Repositories -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Top Repositories</h3>
+                            <p class="text-sm text-gray-600 mb-6">Your most starred and active projects</p>
+                            
+                            <div class="space-y-4">
+                                <!-- Repository 1 -->
+                                <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors cursor-pointer">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-medium text-blue-600">react-dashboard</h4>
+                                        <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">TypeScript</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">Modern React dashboard with TypeScript and Tailwind</p>
+                                    <div class="flex items-center space-x-4 text-xs text-gray-500 mb-3">
+                                        <span class="flex items-center"><i class="fas fa-star mr-1"></i> 89</span>
+                                        <span class="flex items-center"><i class="fas fa-code-branch mr-1"></i> 23</span>
+                                        <span>Updated 1/20/2024</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">react</span>
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">typescript</span>
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">dashboard</span>
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">tailwind</span>
+                                    </div>
+                                </div>
+
+                                <!-- Repository 2 -->
+                                <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors cursor-pointer">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-medium text-blue-600">api-microservice</h4>
+                                        <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">JavaScript</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">Scalable Node.js microservice with MongoDB</p>
+                                    <div class="flex items-center space-x-4 text-xs text-gray-500 mb-3">
+                                        <span class="flex items-center"><i class="fas fa-star mr-1"></i> 67</span>
+                                        <span class="flex items-center"><i class="fas fa-code-branch mr-1"></i> 15</span>
+                                        <span>Updated 1/18/2024</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">nodejs</span>
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">mongodb</span>
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">microservice</span>
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">docker</span>
+                                    </div>
+                                </div>
+
+                                <!-- Repository 3 -->
+                                <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors cursor-pointer">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-medium text-blue-600">ml-algorithms</h4>
+                                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Python</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">Machine learning algorithms implemented in Python</p>
+                                    <div class="flex items-center space-x-4 text-xs text-gray-500 mb-3">
+                                        <span class="flex items-center"><i class="fas fa-star mr-1"></i> 124</span>
+                                        <span class="flex items-center"><i class="fas fa-code-branch mr-1"></i> 34</span>
+                                        <span>Updated 1/15/2024</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">python</span>
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">machine-learning</span>
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">algorithms</span>
+                                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">data-science</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LeetCode Content -->
+                    <div id="leetcodeContent" class="hidden p-6">
+                        <!-- Problem Solving Statistics -->
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Problem Solving Statistics</h3>
+                            <p class="text-sm text-gray-600 mb-6">Your performance across different difficulty levels</p>
+                            
+                            <div class="grid grid-cols-3 gap-4 mb-8">
+                                <div class="text-center p-6 bg-green-50 rounded-lg border border-green-200">
+                                    <div class="text-3xl font-bold text-green-600 mb-2">156</div>
+                                    <div class="text-sm text-gray-600">Easy</div>
+                                </div>
+                                <div class="text-center p-6 bg-yellow-50 rounded-lg border border-yellow-200">
+                                    <div class="text-3xl font-bold text-yellow-600 mb-2">134</div>
+                                    <div class="text-sm text-gray-600">Medium</div>
+                                </div>
+                                <div class="text-center p-6 bg-red-50 rounded-lg border border-red-200">
+                                    <div class="text-3xl font-bold text-red-600 mb-2">52</div>
+                                    <div class="text-sm text-gray-600">Hard</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Submissions -->
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Recent Submissions</h3>
+                            <p class="text-sm text-gray-600 mb-6">Your latest problem-solving activity</p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center">
+                                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs mr-3">Easy</span>
+                                        <div>
+                                            <div class="font-medium text-sm">Two Sum</div>
+                                            <div class="text-xs text-gray-500">52 ms • 14.2 MB</div>
+                                        </div>
+                                    </div>
+                                    <span class="bg-blue-500 text-white px-3 py-1 rounded text-xs">Accepted</span>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center">
+                                        <span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs mr-3">Hard</span>
+                                        <div>
+                                            <div class="font-medium text-sm">Binary Tree Maximum Path Sum</div>
+                                            <div class="text-xs text-gray-500">89 ms • 21.7 MB</div>
+                                        </div>
+                                    </div>
+                                    <span class="bg-blue-500 text-white px-3 py-1 rounded text-xs">Accepted</span>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center">
+                                        <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs mr-3">Medium</span>
+                                        <div>
+                                            <div class="font-medium text-sm">Longest Palindromic Substring</div>
+                                            <div class="text-xs text-gray-500">143 ms • 16.3 MB</div>
+                                        </div>
+                                    </div>
+                                    <span class="bg-blue-500 text-white px-3 py-1 rounded text-xs">Accepted</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Problem Categories -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Problem Categories</h3>
+                            <p class="text-sm text-gray-600 mb-6">Your expertise across different problem types</p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-700">Array</span>
+                                    <div class="flex items-center">
+                                        <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-teal-500 h-2 rounded-full" style="width: 89%"></div>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900 w-8">89</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-700">String</span>
+                                    <div class="flex items-center">
+                                        <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-teal-500 h-2 rounded-full" style="width: 67%"></div>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900 w-8">67</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-700">Dynamic Programming</span>
+                                    <div class="flex items-center">
+                                        <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-teal-500 h-2 rounded-full" style="width: 45%"></div>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900 w-8">45</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-700">Tree</span>
+                                    <div class="flex items-center">
+                                        <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-teal-500 h-2 rounded-full" style="width: 34%"></div>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900 w-8">34</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-700">Graph</span>
+                                    <div class="flex items-center">
+                                        <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-teal-500 h-2 rounded-full" style="width: 23%"></div>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900 w-8">23</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-700">Greedy</span>
+                                    <div class="flex items-center">
+                                        <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-teal-500 h-2 rounded-full" style="width: 18%"></div>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900 w-8">18</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-700">Binary Search</span>
+                                    <div class="flex items-center">
+                                        <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-teal-500 h-2 rounded-full" style="width: 15%"></div>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900 w-8">15</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <button class="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                            <a href="/dev_dashboard/find_jobs.html"><i class="fas fa-briefcase mr-2"></i>Browse Jobs</a>
+                        </button>
+                        <button class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                            <i class="fas fa-chart-bar mr-2"></i>
+                            Skill Assessment
+                        </button>
+                        <button class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                            <i class="fas fa-user-edit mr-2"></i>
+                            Update Profile
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profile Strength -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Profile Strength</h3>
+                    <p class="text-sm text-gray-600 mb-6">Overall technical profile score</p>
+                    
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="relative w-24 h-24">
+                            <svg class="w-24 h-24 circular-progress" viewBox="0 0 36 36">
+                                <path
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="#e5e7eb"
+                                    stroke-width="3"
+                                />
+                                <path
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="#3b82f6"
+                                    stroke-width="3"
+                                    stroke-dasharray="89, 100"
+                                    stroke-linecap="round"
+                                />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold text-blue-600">89%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">GitHub Activity</span>
+                            <span class="text-sm font-medium text-gray-900">Excellent</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">LeetCode Performance</span>
+                            <span class="text-sm font-medium text-gray-900">Very Good</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Code Quality</span>
+                            <span class="text-sm font-medium text-gray-900">Good</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recommendations</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                            <p class="text-sm text-blue-800">
+                                <strong>Practice more Hard problems</strong> to boost your algorithmic skills ranking.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                            <p class="text-sm text-green-800">
+                                <strong>Add project documentation</strong> to showcase your repositories better.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-orange-50 border-l-4 border-orange-400 p-4 rounded-r-lg">
+                            <p class="text-sm text-orange-800">
+                                <strong>Participate in contests</strong> to improve your competitive programming rating.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const githubTab = document.getElementById('githubTab');
+        const leetcodeTab = document.getElementById('leetcodeTab');
+        const githubContent = document.getElementById('githubContent');
+        const leetcodeContent = document.getElementById('leetcodeContent');
+
+        // Function to show GitHub tab
+        function showGitHubTab() {
+            githubTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+            githubTab.classList.remove('text-gray-600');
+            
+            leetcodeTab.classList.add('text-gray-600');
+            leetcodeTab.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+            
+            githubContent.classList.remove('hidden');
+            leetcodeContent.classList.add('hidden');
+        }
+
+        // Function to show LeetCode tab
+        function showLeetCodeTab() {
+            leetcodeTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+            leetcodeTab.classList.remove('text-gray-600');
+            
+            githubTab.classList.add('text-gray-600');
+            githubTab.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+            
+            leetcodeContent.classList.remove('hidden');
+            githubContent.classList.add('hidden');
+        }
+
+        // Event listeners
+        githubTab.addEventListener('click', showGitHubTab);
+        leetcodeTab.addEventListener('click', showLeetCodeTab);
+
+        // Animation for progress bars on load
+        window.addEventListener('load', function() {
+            const progressBars = document.querySelectorAll('.bg-blue-500, .bg-green-500, .bg-orange-500, .bg-red-500, .bg-yellow-400, .bg-purple-500, .bg-teal-500');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.transition = 'width 1s ease-in-out';
+                    bar.style.width = width;
+                }, 100);
+            });
+        });
+
+        // Hover effects for repository cards
+        document.querySelectorAll('.border-gray-200').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.classList.add('shadow-md', 'transform', 'scale-105');
+                this.style.transition = 'all 0.2s ease-in-out';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.classList.remove('shadow-md', 'transform', 'scale-105');
+            });
+        });
+
+        // Smooth scroll animation for circular progress
+        const circularProgress = document.querySelector('.circular-progress path:last-child');
+        if (circularProgress) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        circularProgress.style.strokeDasharray = "0, 100";
+                        setTimeout(() => {
+                            circularProgress.style.transition = 'stroke-dasharray 1.5s ease-in-out';
+                            circularProgress.style.strokeDasharray = "89, 100";
+                        }, 200);
+                    }
+                });
+            });
+            observer.observe(circularProgress);
+        }
+
+        // Add click animations to buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // Tooltip functionality for stats cards
+        const statsCards = document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-4 > div');
+        statsCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+                this.style.transition = 'all 0.2s ease-in-out';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+            });
+        });
+    </script>
+</body>
+</html>
