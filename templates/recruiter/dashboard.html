@@ -1,0 +1,617 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartHire - Job Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <div class="bg-white border-b px-6 py-6 flex justify-between items-start">
+      <div>
+        <h1 class="text-3xl font-bold text-blue-600 mb-2">Job Management</h1>
+        <p class="text-gray-600">
+          Manage your job postings and track applications
+        </p>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a
+          href="{% url 'recruiter:all_candidates' %}"
+          class="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200"
+        >
+          <i class="fas fa-users"></i> All Candidates
+        </a>
+        <button
+          id="openModal"
+          class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+        >
+          <i class="fas fa-plus"></i> Post New Job
+        </button>
+        <a
+          href="{% url 'index' %}"
+          class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+        >
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div
+      class="px-6 py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+    >
+      <div class="bg-white rounded-lg border p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600 mb-1">Total Jobs</p>
+            <p class="text-3xl font-bold text-gray-900">{{ total_jobs }}</p>
+          </div>
+          <div
+            class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center"
+          >
+            <i class="fas fa-briefcase text-green-600 text-xl"></i>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg border p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600 mb-1">Published</p>
+            <p class="text-3xl font-bold text-gray-900">{{ published_jobs }}</p>
+          </div>
+          <div
+            class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center"
+          >
+            <i class="fas fa-chart-line text-green-600 text-xl"></i>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg border p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600 mb-1">
+              Total Applications
+            </p>
+            <p class="text-3xl font-bold text-blue-600">
+              {{ total_applications }}
+            </p>
+          </div>
+          <div
+            class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"
+          >
+            <i class="fas fa-file-alt text-blue-600 text-xl"></i>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg border p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600 mb-1">
+              Avg. Applications
+            </p>
+            <p class="text-3xl font-bold text-orange-500">
+              {{ avg_applications }}
+            </p>
+          </div>
+          <div
+            class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center"
+          >
+            <i class="fas fa-calendar-alt text-orange-500 text-xl"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Replace the job listing section in your dashboard.html with this: -->
+    <div class="px-6 space-y-6">
+      {% for job in jobs %}
+      <div class="bg-white rounded-lg border p-6">
+        <div class="flex justify-between items-start mb-4">
+          <div class="flex-1">
+            <div class="flex items-center mb-2">
+              <h3 class="text-xl font-semibold text-blue-600 mr-3">
+                {{ job.title }}
+              </h3>
+              <span
+                class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded"
+              >
+                {{ job.status|title }}
+              </span>
+            </div>
+            <div class="flex items-center text-gray-600 text-sm space-x-4 mb-3">
+              <div class="flex items-center">
+                <i class="fas fa-map-marker-alt mr-1"></i>{{ job.location }}
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-clock mr-1"></i>{{ job.get_job_type_display }}
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-dollar-sign mr-1"></i>{{ job.salary_min }} - {{job.salary_max }}
+              </div>
+            </div>
+            <p class="text-gray-700 mb-4">
+              {{ job.description|truncatewords:20 }}
+            </p>
+            <div class="flex items-center space-x-2">
+              {% for req in job.requirements %}
+              <span
+                class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded"
+              >
+                {{ req }}
+              </span>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="text-right text-sm text-gray-500 ml-6">
+            <p>Posted {{ job.created_at|date:"Y-m-d" }}</p>
+            <div class="flex items-center justify-end mt-1 text-blue-600">
+              <i class="fas fa-users mr-1"></i>
+              <span>{{ job.applications.count }} applications</span>
+            </div>
+            <!-- New: Buttons to view candidates for this job -->
+            <div class="mt-3 space-y-2">
+              <a
+                href="{% url 'recruiter:job_applications' job.id %}"
+                class="block px-3 py-1 bg-blue-100 text-blue-700 rounded text-xs hover:bg-blue-200 transition-colors"
+              >
+                <i class="fas fa-eye mr-1"></i>View Candidates
+              </a>
+              {% if job.applied_count > 0 %}
+              <a
+                href="{% url 'recruiter:job_applications' job.id %}?status=applied"
+                class="block px-3 py-1 bg-orange-100 text-orange-700 rounded text-xs hover:bg-orange-200 transition-colors"
+              >
+                <i class="fas fa-clock mr-1"></i>New ({{ job.applied_count }})
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-gray-500">No jobs posted yet.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Modal -->
+    <div
+      id="modal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <form
+        id="jobForm"
+        method="POST"
+        action="{% url 'jobs:create_job' %}"
+        class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden"
+      >
+        {% csrf_token %}
+        <input type="hidden" name="requirements" id="requirements-hidden" />
+        <input type="hidden" name="benefits" id="benefits-hidden" />
+        <input type="hidden" name="status" id="job-status" value="draft" />
+
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-6 border-b">
+          <h2 class="text-xl font-semibold text-gray-900">
+            Create New Job Posting
+          </h2>
+          <button
+            type="button"
+            id="closeModal"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            &times;
+          </button>
+        </div>
+
+        <!-- Modal Content (Tabs) -->
+        <div class="border-b">
+          <nav class="flex">
+            <button
+              type="button"
+              class="tab-btn active px-6 py-3 text-sm font-medium border-b-2 border-blue-500 text-blue-600"
+              data-tab="basics"
+            >
+              Basics
+            </button>
+            <button
+              type="button"
+              class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700"
+              data-tab="details"
+            >
+              Details
+            </button>
+            <button
+              type="button"
+              class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700"
+              data-tab="requirements"
+            >
+              Requirements
+            </button>
+          </nav>
+        </div>
+
+        <div class="p-6 overflow-y-auto max-h-[60vh]">
+          <!-- Basics Tab -->
+          <div id="basics-tab" class="tab-content">
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Job Title *</label
+                >
+                <input
+                  type="text"
+                  name="title"
+                  required
+                  class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Job Title"
+                />
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Department</label
+                  >
+                  <input
+                    type="text"
+                    name="department"
+                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Department"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Job Type</label
+                  >
+                  <select
+                    name="job_type"
+                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="full-time" selected>Full-time</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="contract">Contract</option>
+                    <option value="internship">Internship</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Location</label
+                >
+                <input
+                  type="text"
+                  name="location"
+                  class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Location"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Salary Range</label
+                >
+                <div class="grid grid-cols-2 gap-4">
+                  <input
+                    type="number"
+                    name="salary_min"
+                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Min Salary"
+                  />
+                  <input
+                    type="number"
+                    name="salary_max"
+                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Max Salary"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Details Tab -->
+          <div id="details-tab" class="tab-content hidden">
+            <div class="space-y-4">
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Job Description *</label
+              >
+              <textarea
+                name="description"
+                required
+                class="w-full px-3 py-2 border rounded-md h-32 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Describe the role, responsibilities, and what the candidate will be working on..."
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Requirements Tab -->
+          <div id="requirements-tab" class="tab-content hidden">
+            <div class="space-y-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-3"
+                  >Requirements</label
+                >
+                <div id="requirements-list" class="space-y-2 mb-2"></div>
+                <div class="flex gap-2">
+                  <input
+                    type="text"
+                    id="requirement-input"
+                    class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Add a requirement (e.g., 3+ years experience, JavaScript, etc.)..."
+                  />
+                  <button
+                    type="button"
+                    id="add-requirement"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-3"
+                  >Benefits</label
+                >
+                <div id="benefits-list" class="space-y-2 mb-2"></div>
+                <div class="flex gap-2">
+                  <input
+                    type="text"
+                    id="benefit-input"
+                    class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Add a benefit (e.g., Health insurance, Remote work, etc.)..."
+                  />
+                  <button
+                    type="button"
+                    id="add-benefit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="flex justify-between items-center p-6 bg-gray-50 border-t">
+          <button
+            type="button"
+            id="cancelBtn"
+            class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            Cancel
+          </button>
+          <div class="space-x-2">
+            <button
+              type="submit"
+              id="saveDraftBtn"
+              class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+            >
+              Save Draft
+            </button>
+            <button
+              type="submit"
+              id="publishBtn"
+              class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+            >
+              Publish
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      // Get CSRF token from the form
+      function getCsrfToken() {
+        return document.querySelector("[name=csrfmiddlewaretoken]").value;
+      }
+
+      // Modal functionality
+      const modal = document.getElementById("modal");
+      const openModal = document.getElementById("openModal");
+      const closeModal = document.getElementById("closeModal");
+      const cancelBtn = document.getElementById("cancelBtn");
+
+      function openJobModal() {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      }
+
+      function closeJobModal() {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        // Reset form
+        document.getElementById("jobForm").reset();
+        document.getElementById("requirements-list").innerHTML = "";
+        document.getElementById("benefits-list").innerHTML = "";
+        // Reset tabs
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          btn.classList.remove("active", "border-blue-500", "text-blue-600");
+          btn.classList.add("border-transparent", "text-gray-500");
+        });
+        document.querySelectorAll(".tab-content").forEach((content) => {
+          content.classList.add("hidden");
+        });
+        // Show first tab
+        document
+          .querySelector('[data-tab="basics"]')
+          .classList.add("active", "border-blue-500", "text-blue-600");
+        document
+          .querySelector('[data-tab="basics"]')
+          .classList.remove("border-transparent", "text-gray-500");
+        document.getElementById("basics-tab").classList.remove("hidden");
+      }
+
+      openModal.addEventListener("click", openJobModal);
+      closeModal.addEventListener("click", closeJobModal);
+      cancelBtn.addEventListener("click", closeJobModal);
+
+      window.addEventListener("click", (e) => {
+        if (e.target === modal) closeJobModal();
+      });
+
+      // Tab functionality
+      const tabs = document.querySelectorAll(".tab-btn");
+      const tabContents = document.querySelectorAll(".tab-content");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          // Remove active classes from all tabs
+          tabs.forEach((t) =>
+            t.classList.remove("active", "border-blue-500", "text-blue-600")
+          );
+          tabs.forEach((t) =>
+            t.classList.add("border-transparent", "text-gray-500")
+          );
+
+          // Hide all tab contents
+          tabContents.forEach((c) => c.classList.add("hidden"));
+
+          // Activate clicked tab
+          tab.classList.add("active", "border-blue-500", "text-blue-600");
+          tab.classList.remove("border-transparent", "text-gray-500");
+
+          // Show corresponding content
+          document
+            .getElementById(`${tab.dataset.tab}-tab`)
+            .classList.remove("hidden");
+        });
+      });
+
+      // Dynamic Requirements functionality
+      const requirementsList = document.getElementById("requirements-list");
+      const requirementInput = document.getElementById("requirement-input");
+      const addRequirement = document.getElementById("add-requirement");
+
+      function addReq() {
+        const val = requirementInput.value.trim();
+        if (!val) return;
+
+        const div = document.createElement("div");
+        div.className =
+          "flex items-center justify-between bg-blue-100 px-3 py-2 rounded-md";
+        div.innerHTML = `
+          <span class="text-blue-800">${val}</span>
+          <button type="button" class="text-red-500 hover:text-red-700 font-bold ml-2 px-2 py-1">×</button>
+        `;
+
+        div
+          .querySelector("button")
+          .addEventListener("click", () => div.remove());
+        requirementsList.appendChild(div);
+        requirementInput.value = "";
+      }
+
+      addRequirement.addEventListener("click", addReq);
+      requirementInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          addReq();
+        }
+      });
+
+      // Dynamic Benefits functionality
+      const benefitsList = document.getElementById("benefits-list");
+      const benefitInput = document.getElementById("benefit-input");
+      const addBenefit = document.getElementById("add-benefit");
+
+      function addBen() {
+        const val = benefitInput.value.trim();
+        if (!val) return;
+
+        const div = document.createElement("div");
+        div.className =
+          "flex items-center justify-between bg-blue-100 px-3 py-2 rounded-md";
+        div.innerHTML = `
+          <span class="text-blue-800">${val}</span>
+          <button type="button" class="text-red-500 hover:text-red-700 font-bold ml-2 px-2 py-1">×</button>
+        `;
+
+        div
+          .querySelector("button")
+          .addEventListener("click", () => div.remove());
+        benefitsList.appendChild(div);
+        benefitInput.value = "";
+      }
+
+      addBenefit.addEventListener("click", addBen);
+      benefitInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          addBen();
+        }
+      });
+
+      // Form submission with proper CSRF handling
+      function collectRequirements() {
+        const reqs = Array.from(requirementsList.children).map(
+          (item) => item.querySelector("span").textContent
+        );
+        document.getElementById("requirements-hidden").value =
+          JSON.stringify(reqs);
+      }
+
+      function collectBenefits() {
+        const bens = Array.from(benefitsList.children).map(
+          (item) => item.querySelector("span").textContent
+        );
+        document.getElementById("benefits-hidden").value = JSON.stringify(bens);
+      }
+
+      function validateForm() {
+        const title = document.querySelector('[name="title"]').value.trim();
+        const description = document
+          .querySelector('[name="description"]')
+          .value.trim();
+
+        if (!title) {
+          alert("Please enter a job title.");
+          return false;
+        }
+
+        if (!description) {
+          alert("Please enter a job description.");
+          return false;
+        }
+
+        return true;
+      }
+
+      // Handle form submission
+      document
+        .getElementById("jobForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          if (!validateForm()) {
+            return;
+          }
+
+          collectRequirements();
+          collectBenefits();
+
+          // Submit the form normally (this will include the CSRF token)
+          this.submit();
+        });
+
+      // Button event handlers
+      document.getElementById("saveDraftBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById("job-status").value = "draft";
+        document.getElementById("jobForm").dispatchEvent(new Event("submit"));
+      });
+
+      document.getElementById("publishBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById("job-status").value = "published";
+        document.getElementById("jobForm").dispatchEvent(new Event("submit"));
+      });
+    </script>
+  </body>
+</html>

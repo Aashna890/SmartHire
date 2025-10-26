@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Management Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .candidate-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .candidate-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Header -->
+        <div class="mb-6">
+            <div class="flex items-center mb-2">
+                <button class="flex items-center text-gray-600 hover:text-gray-800 mr-4">
+                    <a href="{% url 'recruiter:dashboard' %}"><i class="fas fa-arrow-left mr-2"></i></a>
+                    <span class="text-sm font-medium">Back to Jobs</span>
+                </button>
+            </div>
+            <h1 class="text-2xl font-semibold text-gray-900 mb-1">All Candidates</h1>
+            <p class="text-gray-600 text-sm">Review and manage candidate applications ({{ total_candidates }} total)</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-6 gap-4 mb-8">
+            <!-- Applied -->
+            <div class="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-center w-8 h-8 bg-orange-100 rounded-full mb-3 mx-auto">
+                    <i class="fas fa-clock text-orange-600"></i>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-gray-900">{{ stats.applied }}</h3>
+                    <p class="text-sm text-gray-600">Applied</p>
+                </div>
+            </div>
+
+            <!-- Reviewing -->
+            <div class="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full mb-3 mx-auto">
+                    <i class="fas fa-eye text-blue-600"></i>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-gray-900">{{ stats.under_review }}</h3>
+                    <p class="text-sm text-gray-600">Reviewing</p>
+                </div>
+            </div>
+
+            <!-- Shortlisted -->
+            <div class="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-center w-8 h-8 bg-purple-100 rounded-full mb-3 mx-auto">
+                    <i class="fas fa-star text-purple-600"></i>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-gray-900">{{ stats.interview }}</h3>
+                    <p class="text-sm text-gray-600">Shortlisted</p>
+                </div>
+            </div>
+
+            <!-- Interviewed -->
+            <div class="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-center w-8 h-8 bg-orange-100 rounded-full mb-3 mx-auto">
+                    <i class="fas fa-comments text-orange-600"></i>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-gray-900">{{ stats.interviewed|default:0 }}</h3>
+                    <p class="text-sm text-gray-600">Interviewed</p>
+                </div>
+            </div>
+
+            <!-- Selected -->
+            <div class="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-center w-8 h-8 bg-green-100 rounded-full mb-3 mx-auto">
+                    <i class="fas fa-check text-green-600"></i>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-gray-900">{{ stats.hired }}</h3>
+                    <p class="text-sm text-gray-600">Selected</p>
+                </div>
+            </div>
+
+            <!-- Rejected -->
+            <div class="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full mb-3 mx-auto">
+                    <i class="fas fa-times text-red-600"></i>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-gray-900">{{ stats.rejected }}</h3>
+                    <p class="text-sm text-gray-600">Rejected</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="mb-6">
+            <div class="flex space-x-6 border-b border-gray-200">
+                <button class="pb-2 px-1 border-b-2 border-blue-500 text-sm font-medium text-blue-600 tab-filter" data-status="all">
+                    All ({{ total_candidates }})
+                </button>
+                <button class="pb-2 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 tab-filter" data-status="applied">
+                    Applied ({{ stats.applied }})
+                </button>
+                <button class="pb-2 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 tab-filter" data-status="under_review">
+                    Reviewing ({{ stats.under_review }})
+                </button>
+                <button class="pb-2 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 tab-filter" data-status="interview">
+                    Shortlisted ({{ stats.interview }})
+                </button>
+                <button class="pb-2 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 tab-filter" data-status="hired">
+                    Selected ({{ stats.hired }})
+                </button>
+                <button class="pb-2 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 tab-filter" data-status="rejected">
+                    Rejected ({{ stats.rejected }})
+                </button>
+            </div>
+        </div>
+
+        <!-- Candidate List -->
+        <div class="space-y-4" id="candidates-list">
+            {% for app_data in applications %}
+            {% with application=app_data.application profile=app_data.profile %}
+            <div class="bg-white rounded-lg p-6 border border-gray-200 candidate-card cursor-pointer" 
+                 data-status="{{ application.status }}"
+                 onclick="window.location.href='{% url 'recruiter:candidate_detail' application.id %}'">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 {% cycle 'bg-blue-500' 'bg-green-500' 'bg-purple-500' 'bg-red-500' 'bg-yellow-500' 'bg-indigo-500' %} rounded-full flex items-center justify-center text-white font-semibold">
+                            {{ profile.username|slice:":2"|upper }}
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <h3 class="font-semibold text-gray-900">{{ profile.username }}</h3>
+                                <span class="px-2 py-1 rounded-full text-xs font-medium
+                                    {% if application.status == 'applied' %}
+                                        bg-orange-100 text-orange-800
+                                    {% elif application.status == 'under_review' %}
+                                        bg-blue-100 text-blue-800
+                                    {% elif application.status == 'interview' %}
+                                        bg-purple-100 text-purple-800
+                                    {% elif application.status == 'hired' %}
+                                        bg-green-100 text-green-800
+                                    {% elif application.status == 'rejected' %}
+                                        bg-red-100 text-red-800
+                                    {% else %}
+                                        bg-gray-100 text-gray-800
+                                    {% endif %}
+                                ">
+                                    {% if application.status == 'applied' %}Applied
+                                    {% elif application.status == 'under_review' %}Reviewing
+                                    {% elif application.status == 'interview' %}Shortlisted
+                                    {% elif application.status == 'hired' %}Selected
+                                    {% elif application.status == 'rejected' %}Rejected
+                                    {% else %}{{ application.status|title }}
+                                    {% endif %}
+                                </span>
+                                <div class="flex items-center text-yellow-500">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <span class="text-xs text-gray-600 ml-1">{{ app_data.match_score }}%</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 text-sm">{{ profile.title|default:"Software Developer" }}</p>
+                            <div class="flex items-center text-xs text-gray-500 mt-1">
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                <span>{{ profile.location|default:"Location not specified" }}</span>
+                                <i class="fas fa-calendar-alt ml-4 mr-1"></i>
+                                <span>Applied {{ application.applied_at|date:"Y-m-d" }}</span>
+                                {% if application.status == 'interview' %}
+                                <i class="fas fa-calendar-check ml-4 mr-1"></i>
+                                <span>Interview Scheduled</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900">{{ application.job.title }}</p>
+                            <p class="text-xs text-gray-500">{{ application.job.location }}</p>
+                        </div>
+                        <button class="p-2 text-gray-400 hover:text-gray-600" onclick="event.stopPropagation();">
+                            {% if application.status == 'applied' %}
+                                <i class="fas fa-clock"></i>
+                            {% elif application.status == 'under_review' %}
+                                <i class="fas fa-eye text-blue-500"></i>
+                            {% elif application.status == 'interview' %}
+                                <i class="fas fa-star text-purple-500"></i>
+                            {% elif application.status == 'hired' %}
+                                <i class="fas fa-check text-green-500"></i>
+                            {% elif application.status == 'rejected' %}
+                                <i class="fas fa-times text-red-500"></i>
+                            {% else %}
+                                <i class="fas fa-user"></i>
+                            {% endif %}
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex flex-wrap gap-2">
+                        {% for skill in app_data.skills %}
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">{{ skill }}</span>
+                        {% endfor %}
+                        {% if app_data.extra_skills_count > 0 %}
+                        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">+{{ app_data.extra_skills_count }} more</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+            {% empty %}
+            <!-- No Candidates -->
+            <div class="bg-white rounded-lg p-8 border border-gray-200 text-center">
+                <i class="fas fa-users text-4xl text-gray-300 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No Candidates Yet</h3>
+                <p class="text-gray-600">No one has applied to your jobs yet. Make sure your jobs are published and attractive to candidates.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Load More (if needed) -->
+        {% if applications|length >= 20 %}
+        <div class="text-center mt-8">
+            <button class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                Load More Candidates
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab filtering functionality
+            const tabFilters = document.querySelectorAll('.tab-filter');
+            const candidateCards = document.querySelectorAll('.candidate-card');
+
+            tabFilters.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetStatus = this.dataset.status;
+                    
+                    // Update active tab
+                    tabFilters.forEach(t => {
+                        t.classList.remove('border-blue-500', 'text-blue-600');
+                        t.classList.add('border-transparent', 'text-gray-500');
+                    });
+                    this.classList.remove('border-transparent', 'text-gray-500');
+                    this.classList.add('border-blue-500', 'text-blue-600');
+                    
+                    // Filter candidates
+                    candidateCards.forEach(card => {
+                        if (targetStatus === 'all') {
+                            card.style.display = 'block';
+                        } else {
+                            const cardStatus = card.dataset.status;
+                            card.style.display = cardStatus === targetStatus ? 'block' : 'none';
+                        }
+                    });
+                });
+            });
+
+            // Enhanced hover effects for cards
+            candidateCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+                });
+            });
+
+            // Search functionality (you can add this if needed)
+            function addSearchFilter() {
+                const searchInput = document.createElement('input');
+                searchInput.type = 'text';
+                searchInput.placeholder = 'Search candidates...';
+                searchInput.className = 'w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+                
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    candidateCards.forEach(card => {
+                        const candidateName = card.querySelector('h3').textContent.toLowerCase();
+                        const candidateTitle = card.querySelector('.text-gray-600').textContent.toLowerCase();
+                        const skills = Array.from(card.querySelectorAll('.bg-blue-100')).map(skill => 
+                            skill.textContent.toLowerCase()
+                        ).join(' ');
+                        
+                        const isVisible = candidateName.includes(searchTerm) || 
+                                         candidateTitle.includes(searchTerm) || 
+                                         skills.includes(searchTerm);
+                                         
+                        card.style.display = isVisible ? 'block' : 'none';
+                    });
+                });
+                
+                // Insert search input before the filter tabs
+                const filterSection = document.querySelector('.mb-6');
+                filterSection.insertBefore(searchInput, filterSection.firstChild);
+            }
+            
+            // Uncomment the line below to add search functionality
+            // addSearchFilter();
+        });
+    </script>
+</body>
+</html>

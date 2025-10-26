@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ job.title }} - Applications</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Header -->
+        <div class="mb-6">
+            <div class="flex items-center mb-4">
+                <a href="{% url 'recruiter:dashboard' %}" class="flex items-center text-gray-600 hover:text-gray-800 mr-4">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    <span class="text-sm font-medium">Back to Dashboard</span>
+                </a>
+            </div>
+            <div class="bg-white rounded-lg p-6 border">
+                <h1 class="text-2xl font-bold text-gray-900 mb-2">{{ job.title }}</h1>
+                <div class="flex items-center text-gray-600 text-sm space-x-4 mb-3">
+                    <span><i class="fas fa-map-marker-alt mr-1"></i>{{ job.location }}</span>
+                    <span><i class="fas fa-clock mr-1"></i>{{ job.get_job_type_display }}</span>
+                    <span><i class="fas fa-calendar mr-1"></i>Posted {{ job.created_at|date:"F j, Y" }}</span>
+                </div>
+                <p class="text-gray-700">{{ job.description|truncatewords:30 }}</p>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-5 gap-4 mb-8">
+            <div class="bg-white rounded-lg p-4 border hover:shadow-md transition-shadow">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-gray-900">{{ total_applications }}</h3>
+                    <p class="text-sm text-gray-600">Total Applications</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-4 border hover:shadow-md transition-shadow">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-orange-600">{{ stats.applied }}</h3>
+                    <p class="text-sm text-gray-600">New</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-4 border hover:shadow-md transition-shadow">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-blue-600">{{ stats.under_review }}</h3>
+                    <p class="text-sm text-gray-600">Under Review</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-4 border hover:shadow-md transition-shadow">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-purple-600">{{ stats.interview }}</h3>
+                    <p class="text-sm text-gray-600">Interview</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-4 border hover:shadow-md transition-shadow">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-green-600">{{ stats.hired }}</h3>
+                    <p class="text-sm text-gray-600">Hired</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="mb-6">
+            <div class="flex space-x-6 border-b border-gray-200">
+                <button class="pb-2 px-1 border-b-2 border-blue-500 text-sm font-medium text-blue-600 tab-filter" data-status="all">
+                    All ({{ total_applications }})
+                </button>
+                <button class="pb-2 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 tab-filter" data-status="applied">
+                    New ({{ stats.applied }})
+                </button>
+                <button class="pb-2 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 tab-filter" data-status="under_review">
+                    Under Review ({{ stats.under_review }})
+                </button>
+                <button class="pb-2 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 tab-filter" data-status="interview">
+                    Interview ({{ stats.interview }})
+                </button>
+                <button class="pb-2 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 tab-filter" data-status="hired">
+                    Hired ({{ stats.hired }})
+                </button>
+                <button class="pb-2 px-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 tab-filter" data-status="rejected">
+                    Rejected ({{ stats.rejected }})
+                </button>
+            </div>
+        </div>
+
+        <!-- Applications List -->
+        <div class="space-y-4">
+            {% for app_data in applications %}
+            {% with application=app_data.application profile=app_data.profile %}
+            <div class="bg-white rounded-lg p-6 border candidate-card" data-status="{{ application.status }}">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 {% cycle 'bg-blue-500' 'bg-green-500' 'bg-purple-500' 'bg-red-500' 'bg-yellow-500' 'bg-indigo-500' %} rounded-full flex items-center justify-center text-white font-semibold">
+                            {{ profile.username|default:application.developer.email|slice:":2"|upper }}
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">{{ profile.username|default:application.developer.email }}</h3>
+                            <p class="text-gray-600 text-sm">{{ profile.title|default:"Developer" }}</p>
+                            <div class="flex items-center text-xs text-gray-500 mt-1">
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                <span>{{ profile.location|default:"Location not specified" }}</span>
+                                <i class="fas fa-calendar-alt ml-4 mr-1"></i>
+                                <span>Applied {{ application.applied_at|date:"M j, Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-center">
+                            <div class="flex items-center text-yellow-500">
+                                <i class="fas fa-star text-sm"></i>
+                                <span class="text-sm font-medium ml-1">{{ app_data.match_score }}%</span>
+                            </div>
+                            <span class="text-xs text-gray-500">Match Score</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium
+                                {% if application.status == 'applied' %}
+                                    bg-orange-100 text-orange-800
+                                {% elif application.status == 'under_review' %}
+                                    bg-blue-100 text-blue-800
+                                {% elif application.status == 'interview' %}
+                                    bg-purple-100 text-purple-800
+                                {% elif application.status == 'hired' %}
+                                    bg-green-100 text-green-800
+                                {% elif application.status == 'rejected' %}
+                                    bg-red-100 text-red-800
+                                {% endif %}">
+                                {% if application.status == 'applied' %}New
+                                {% elif application.status == 'under_review' %}Under Review
+                                {% elif application.status == 'interview' %}Interview
+                                {% elif application.status == 'hired' %}Hired
+                                {% elif application.status == 'rejected' %}Rejected
+                                {% else %}{{ application.status|title }}
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="mb-4">
+                    <div class="flex flex-wrap gap-2">
+                        {% for skill in app_data.skills %}
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">{{ skill }}</span>
+                        {% endfor %}
+                        {% if app_data.extra_skills_count > 0 %}
+                        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">+{{ app_data.extra_skills_count }} more</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Quick Status Update -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <a href="{% url 'recruiter:candidate_detail' application.id %}" 
+                           class="px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors text-sm">
+                            <i class="fas fa-eye mr-1"></i>View Profile
+                        </a>
+                        {% if profile.github_url %}
+                        <a href="{{ profile.github_url }}" target="_blank" 
+                           class="px-3 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors text-sm">
+                            <i class="fab fa-github mr-1"></i>GitHub
+                        </a>
+                        {% endif %}
+
+                        {% if profile.leetcode_url %}
+                        <a href="{{ profile.leetcode_url }}" target="_blank" 
+                           class="px-3 py-2 bg-yellow-400 text-black-700 rounded hover:bg-green-200 transition-colors text-sm">
+                          <i class="fas fa-code mr-1"></i>LeetCode
+                        </a>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Quick Status Update Form -->
+                    <form method="POST" action="{% url 'recruiter:update_application_status' application.id %}" 
+                          class="flex items-center space-x-2 quick-status-form">
+                        {% csrf_token %}
+                        <select name="status" class="px-3 py-1 border rounded text-sm status-select">
+                            <option value="applied" {% if application.status == 'applied' %}selected{% endif %}>New</option>
+                            <option value="under_review" {% if application.status == 'under_review' %}selected{% endif %}>Under Review</option>
+                            <option value="interview" {% if application.status == 'interview' %}selected{% endif %}>Interview</option>
+                            <option value="hired" {% if application.status == 'hired' %}selected{% endif %}>Hired</option>
+                            <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                        <button type="submit" class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition-colors text-sm">
+                            Update
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endwith %}
+            {% empty %}
+            <div class="bg-white rounded-lg p-8 border text-center">
+                <i class="fas fa-users text-4xl text-gray-300 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No Applications Yet</h3>
+                <p class="text-gray-600">No candidates have applied to this job yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Tab filtering
+        document.querySelectorAll('.tab-filter').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetStatus = this.dataset.status;
+                
+                // Update active tab
+                document.querySelectorAll('.tab-filter').forEach(t => {
+                    t.classList.remove('border-blue-500', 'text-blue-600');
+                    t.classList.add('border-transparent', 'text-gray-500');
+                });
+                this.classList.remove('border-transparent', 'text-gray-500');
+                this.classList.add('border-blue-500', 'text-blue-600');
+                
+                // Filter candidates
+                document.querySelectorAll('.candidate-card').forEach(card => {
+                    if (targetStatus === 'all') {
+                        card.style.display = 'block';
+                    } else {
+                        const cardStatus = card.dataset.status;
+                        card.style.display = cardStatus === targetStatus ? 'block' : 'none';
+                    }
+                });
+            });
+        });
+
+        // Handle form submissions
+        document.querySelectorAll('.quick-status-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const button = this.querySelector('button[type="submit"]');
+                const originalText = button.textContent;
+                
+                button.textContent = 'Updating...';
+                button.disabled = true;
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        const statusBadge = this.closest('.candidate-card').querySelector('.rounded-full');
+                        const newStatus = formData.get('status');
+                        
+                        // Update status badge
+                        statusBadge.className = `px-3 py-1 rounded-full text-xs font-medium ${getStatusClasses(newStatus)}`;
+                        statusBadge.textContent = getStatusText(newStatus);
+                        
+                        // Update card data attribute
+                        this.closest('.candidate-card').dataset.status = newStatus;
+                        
+                        // Show toast notification
+                        showToast('Status updated successfully!', 'success');
+                    } else {
+                        showToast(data.message || 'Error updating status', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Error updating status', 'error');
+                })
+                .finally(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                });
+            });
+        });
+
+        function getStatusClasses(status) {
+            const classes = {
+                'applied': 'bg-orange-100 text-orange-800',
+                'under_review': 'bg-blue-100 text-blue-800',
+                'interview': 'bg-purple-100 text-purple-800',
+                'hired': 'bg-green-100 text-green-800',
+                'rejected': 'bg-red-100 text-red-800'
+            };
+            return classes[status] || 'bg-gray-100 text-gray-800';
+        }
+
+        function getStatusText(status) {
+            const text = {
+                'applied': 'New',
+                'under_review': 'Under Review',
+                'interview': 'Interview',
+                'hired': 'Hired',
+                'rejected': 'Rejected'
+            };
+            return text[status] || status;
+        }
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 px-4 py-2 rounded shadow-lg text-white z-50 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enhanced Profile Setup - Review</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center">
+          <button class="mr-4 p-2 hover:bg-gray-100 rounded-lg">
+            <a href="{% url 'signup_step2' %}"
+              ><i class="fas fa-arrow-left text-gray-600"></i
+            ></a>
+          </button>
+          <div>
+            <h1 class="text-2xl font-semibold text-blue-600">
+              Enhanced Profile Setup
+            </h1>
+            <p class="text-gray-500">Step 3 of 3</p>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <button class="p-2 hover:bg-gray-100 rounded-lg">
+            <i class="fas fa-code text-gray-600"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="mb-12">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-medium"
+            >
+              <i class="fas fa-check text-xs"></i>
+            </div>
+            <span class="ml-3 text-sm font-medium text-green-600"
+              >Personal Info</span
+            >
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-medium"
+            >
+              <i class="fas fa-check text-xs"></i>
+            </div>
+            <span class="ml-3 text-sm font-medium text-green-600"
+              >Connect Accounts</span
+            >
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium"
+            >
+              3
+            </div>
+            <span class="ml-3 text-sm font-medium text-blue-600">Review</span>
+          </div>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div class="bg-blue-600 h-2 rounded-full" style="width: 100%"></div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+        <!-- Section Header -->
+        <div class="flex items-start mb-8">
+          <div class="bg-yellow-100 p-3 rounded-lg mr-4">
+            <i class="fas fa-clipboard-check text-yellow-600 text-xl"></i>
+          </div>
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">Profile Summary</h2>
+            <p class="text-gray-600 mt-1">Review your technical profile</p>
+          </div>
+        </div>
+
+        <!-- Technical Strength Analysis -->
+        <div class="mb-8">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">
+            Technical Strength Analysis
+          </h3>
+          <p class="text-gray-600 text-sm mb-6">
+            Based on your GitHub and LeetCode data
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- Programming Languages -->
+            <div>
+              <h4 class="font-medium text-gray-900 mb-4">
+                Top Programming Languages
+              </h4>
+              <div class="space-y-3">
+                {% for lang, percent in github_data.top_languages.items %}
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-700">{{ lang }}</span>
+                  <div class="flex items-center">
+                    <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                      <div
+                        class="bg-blue-600 h-2 rounded-full"
+                        style="width: {{ percent }}%"
+                      ></div>
+                    </div>
+                    <span class="text-sm text-gray-600">{{ percent }}%</span>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- Problem-Solving Skills -->
+            <div>
+              <h4 class="font-medium text-gray-900 mb-4">
+                Problem-Solving Skills
+              </h4>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-700">Easy Problems</span>
+                  <span class="text-sm font-medium text-green-600"
+                    >{{ leetcode_data.easy }}</span
+                  >
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-700">Medium Problems</span>
+                  <span class="text-sm font-medium text-orange-600"
+                    >{{ leetcode_data.medium }}</span
+                  >
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-700">Hard Problems</span>
+                  <span class="text-sm font-medium text-red-600"
+                    >{{ leetcode_data.hard }}</span
+                  >
+                </div>
+                <div class="flex items-center justify-between border-t pt-4">
+                  <span class="text-sm font-medium text-gray-900">Ranking</span>
+                  <span
+                    class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium"
+                    >{{ leetcode_data.ranking }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="flex justify-between items-center mt-8">
+        <a
+          href="{% url 'signup_step2' %}"
+          class="px-6 py-3 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+          id="prevBtn"
+        >
+          Previous
+        </a>
+
+        <form method="post" action="{% url 'signup_step3' %}">
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors"
+          >
+            Complete Profile
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Complete Profile button functionality
+      document
+        .querySelector('button[class*="bg-blue-600"]')
+        .addEventListener("click", function (e) {
+          e.preventDefault(); // prevent default form submission immediately
+
+          // Simulate profile completion
+          this.innerHTML =
+            '<i class="fas fa-spinner fa-spin mr-2"></i>Completing...';
+          this.disabled = true;
+
+          // Submit the form after a short delay (for animation)
+          const form = this.closest("form"); // get parent form
+
+          setTimeout(() => {
+            form.submit(); // actually submit the form to Django
+          }, 1000); // 1 second delay for spinner effect
+        });
+
+      document
+        .getElementById("prevBtn")
+        .addEventListener("click", function (e) {
+          e.preventDefault(); // prevent immediate navigation
+          if (confirm("Going back to step 2: Connect Accounts?")) {
+            window.location.href = this.href; // navigate if confirmed
+          }
+        });
+
+      // Add hover effects to progress bars
+      document.querySelectorAll('[style*="width:"]').forEach((bar) => {
+        bar.addEventListener("mouseenter", function () {
+          this.classList.add("transition-all", "duration-300");
+        });
+      });
+    </script>
+  </body>
+</html>

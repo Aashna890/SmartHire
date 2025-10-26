@@ -1,0 +1,76 @@
+{
+  "contact_info": {
+    "name": "Sunil Roshanlal Saini",
+    "email": "ss1733910@gmail.com",
+    "phone": "",
+    "address": null,
+    "linkedin": null,
+    "github": null,
+    "website": null
+  },
+  "summary": null,
+  "skills": [
+    "java",
+    "javascript",
+    "html",
+    "css",
+    "react",
+    "node.js",
+    "express",
+    "bootstrap",
+    "mongodb",
+    "teamwork"
+  ],
+  "technical_skills": [
+    "java",
+    "javascript",
+    "html",
+    "css",
+    "react",
+    "node.js",
+    "express",
+    "bootstrap",
+    "mongodb"
+  ],
+  "soft_skills": [
+    "teamwork"
+  ],
+  "work_experience": [],
+  "internship_experience": [],
+  "all_experience": [],
+  "education": [
+    {
+      "degree": "ba",
+      "institution": null,
+      "year": null,
+      "gpa": null,
+      "field_of_study": null
+    },
+    {
+      "degree": "ba",
+      "institution": null,
+      "year": null,
+      "gpa": null,
+      "field_of_study": null
+    },
+    {
+      "degree": "ba",
+      "institution": null,
+      "year": null,
+      "gpa": null,
+      "field_of_study": null
+    },
+    {
+      "degree": "ms",
+      "institution": null,
+      "year": null,
+      "gpa": null,
+      "field_of_study": null
+    }
+  ],
+  "certifications": null,
+  "projects": null,
+  "languages": null,
+  "years_of_experience": 0,
+  "total_internship_months": 0
+}

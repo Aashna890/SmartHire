@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartHire - Complete Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- Header Navigation -->
+    <div class="bg-white border-b px-6 py-4 shadow-sm">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <a
+            href="#"
+            class="text-gray-600 hover:text-gray-900 mr-4 transition-colors"
+            onclick="goBack()"
+          >
+            <i class="fas fa-arrow-left text-lg"></i>
+          </a>
+          <div>
+            <h1 class="text-lg font-semibold text-blue-600">
+              SmartHire Registration
+            </h1>
+            <p class="text-sm text-gray-600">
+              Complete your profile to continue
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-2xl mx-auto px-6 py-8">
+      <!-- Registration Card -->
+      <div class="bg-white rounded-xl shadow-lg border p-8">
+        <div class="text-center mb-8">
+          <div
+            class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="fas fa-user text-2xl text-blue-600"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">
+            Create Your Account
+          </h2>
+          <p class="text-gray-600">Provide your details to register</p>
+        </div>
+
+        <form id="registrationForm" action="{% url 'recruiter_signup1' %}" method="POST">
+          {% csrf_token %}
+          <!-- Name Fields -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-1">
+            <div>
+              <label class="block text-sm font-medium text-gray-900 mb-2">
+                First Name <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  placeholder="Enter first name"
+                  required
+                />
+              </div>
+              <p
+                id="firstNameError"
+                class="text-red-500 text-xs mt-1 hidden"
+              ></p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-900 mb-2">
+                Last Name <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  placeholder="Enter last name"
+                  required
+                />
+              </div>
+              <p
+                id="lastNameError"
+                class="text-red-500 text-xs mt-1 hidden"
+              ></p>
+            </div>
+          </div>
+
+          <!-- Email Field -->
+          <div>
+            <label class="block text-sm font-medium text-gray-900 mb-2 mt-3">
+              Email Address <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-12 transition-all"
+                placeholder="Enter email address"
+                required
+              />
+              <i
+                class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+              ></i>
+            </div>
+            <p id="emailError" class="text-red-500 text-xs mt-1 hidden"></p>
+          </div>
+
+          <!-- Phone Field -->
+          <div>
+            <label class="block text-sm font-medium text-gray-900 mb-2 mt-3">
+              Phone Number <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-12 transition-all"
+                placeholder="Enter phone number"
+                required
+              />
+              <i
+                class="fas fa-phone absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+              ></i>
+            </div>
+            <p id="phoneError" class="text-red-500 text-xs mt-1 hidden"></p>
+          </div>
+
+          <!-- Company -->
+          <div>
+            <label class="block text-sm font-medium text-gray-900 mb-2 mt-3">
+              Current Company <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              placeholder="Company name"
+              required
+            />
+            <p id="companyError" class="text-red-500 text-xs mt-1 hidden"></p>
+          </div>
+
+          <!-- Industry -->
+          <div>
+            <label class="block text-sm font-medium text-gray-900 mb-2 mt-3">
+              Industry <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="industry"
+              name="industry"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white transition-all"
+              required
+            >
+              <option value="">Select industry</option>
+              <option value="technology">Technology</option>
+              <option value="finance">Finance</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="education">Education</option>
+              <option value="retail">Retail</option>
+              <option value="manufacturing">Manufacturing</option>
+              <option value="consulting">Consulting</option>
+              <option value="other">Other</option>
+            </select>
+            <p
+              id="industryError"
+              class="text-red-500 text-xs mt-1 hidden"
+            ></p>
+          </div>
+
+          <!-- Password Fields -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-900 mb-2">
+                Password <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-12 pr-12 transition-all"
+                  placeholder="Create password"
+                  required
+                />
+                <i
+                  class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                ></i>
+                <button
+                  type="button"
+                  id="togglePassword"
+                  class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <i class="fas fa-eye" id="eyeIcon"></i>
+                </button>
+              </div>
+              <p
+                id="passwordError"
+                class="text-red-500 text-xs mt-1 hidden"
+              ></p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-900 mb-2">
+                Confirm Password <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-12 transition-all"
+                  placeholder="Confirm password"
+                  required
+                />
+                <i
+                  class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                ></i>
+              </div>
+              <p
+                id="confirmPasswordError"
+                class="text-red-500 text-xs mt-1 hidden"
+              ></p>
+            </div>
+          </div>
+
+          <!-- Password Requirements -->
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="text-sm font-medium text-gray-700 mb-2">Password Requirements:</h4>
+            <ul class="text-xs text-gray-600 space-y-1">
+              <li id="req-length" class="flex items-center">
+                <i class="fas fa-times text-red-500 mr-2 w-4"></i>
+                At least 8 characters long
+              </li>
+              <li id="req-uppercase" class="flex items-center">
+                <i class="fas fa-times text-red-500 mr-2 w-4"></i>
+                One uppercase letter
+              </li>
+              <li id="req-lowercase" class="flex items-center">
+                <i class="fas fa-times text-red-500 mr-2 w-4"></i>
+                One lowercase letter
+              </li>
+              <li id="req-number" class="flex items-center">
+                <i class="fas fa-times text-red-500 mr-2 w-4"></i>
+                One number
+              </li>
+            </ul>
+          </div>
+
+          <!-- Terms and Conditions -->
+          <div>
+            <label class="flex items-start">
+              <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1 mr-3"
+                required
+              />
+              <span class="text-sm text-gray-700">
+                I agree to the
+                <a
+                  href="#"
+                  class="text-blue-600 hover:text-blue-800 font-medium"
+                  >Terms of Service</a
+                >
+                and
+                <a
+                  href="#"
+                  class="text-blue-600 hover:text-blue-800 font-medium"
+                  >Privacy Policy</a
+                >
+              </span>
+            </label>
+            <p id="termsError" class="text-red-500 text-xs mt-1 hidden"></p>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-end pt-8 border-t border-gray-200 mt-8">
+            <button
+              id="submitBtn"
+              type="submit"
+              class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span id="submitText">Complete Registration</span>
+              <i
+                id="submitSpinner"
+                class="fas fa-spinner fa-spin ml-2 hidden"
+              ></i>
+            </button>
+          </div>
+        </form>
+
+        <!-- Form Validation Summary -->
+        <div
+          id="validationSummary"
+          class="hidden mt-6 p-4 bg-red-50 border border-red-200 rounded-lg"
+        >
+          <div class="flex items-start">
+            <i class="fas fa-exclamation-triangle text-red-500 mr-3 mt-0.5"></i>
+            <div>
+              <h4 class="text-red-800 font-medium">
+                Please fix the following errors:
+              </h4>
+              <ul
+                id="errorList"
+                class="text-red-600 text-sm mt-2 space-y-1"
+              ></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Configuration object for navigation paths
+      const config = {
+        dashboardUrl: "../rec_dashboard/recruiter_dashboard.html",
+      };
+
+      // Form elements
+      const form = document.getElementById("registrationForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const validationSummary = document.getElementById("validationSummary");
+      const errorList = document.getElementById("errorList");
+
+      function goBack() {
+        if (window.history.length > 1) window.history.back();
+        else window.location.href = "{% url 'recruiter_login' %}";
+      }
+
+      // Validation rules
+      const validationRules = {
+        firstName: {
+          required: true,
+          minLength: 2,
+          pattern: /^[a-zA-Z\s]+$/,
+          message:
+            "First name must be at least 2 characters and contain only letters",
+        },
+        lastName: {
+          required: true,
+          minLength: 2,
+          pattern: /^[a-zA-Z\s]+$/,
+          message:
+            "Last name must be at least 2 characters and contain only letters",
+        },
+        email: {
+          required: true,
+          pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+          message: "Please enter a valid email address",
+        },
+        phone: {
+          required: true,
+          pattern: /^[\+]?[\d\s\-\(\)]{10,}$/,
+          message: "Please enter a valid phone number (at least 10 digits)",
+        },
+        company: {
+          required: true,
+          minLength: 2,
+          message: "Company name must be at least 2 characters long",
+        },
+        industry: {
+          required: true,
+          message: "Please select your industry",
+        },
+        password: {
+          required: true,
+          minLength: 8,
+          custom: (value) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value),
+          message:
+            "Password must be at least 8 characters with uppercase, lowercase, and number",
+        },
+        confirmPassword: {
+          required: true,
+          custom: (value) =>
+            value === document.getElementById("password").value,
+          message: "Passwords do not match",
+        },
+        terms: {
+          required: true,
+          message: "You must agree to the terms and conditions",
+        },
+      };
+
+      // Initialize
+      setupEventListeners();
+
+      function setupEventListeners() {
+        form.addEventListener("submit", handleSubmit);
+
+        // Password toggle
+        const togglePassword = document.getElementById("togglePassword");
+        const eyeIcon = document.getElementById("eyeIcon");
+        const passwordInput = document.getElementById("password");
+
+        togglePassword?.addEventListener("click", function () {
+          const type =
+            passwordInput.getAttribute("type") === "password"
+              ? "text"
+              : "password";
+          passwordInput.setAttribute("type", type);
+          eyeIcon.classList.toggle("fa-eye");
+          eyeIcon.classList.toggle("fa-eye-slash");
+        });
+
+        // Real-time validation
+        Object.keys(validationRules).forEach((fieldName) => {
+          const field = document.getElementById(fieldName);
+          if (field) {
+            field.addEventListener("blur", () => validateField(fieldName));
+            field.addEventListener("input", () => clearFieldError(fieldName));
+            if (fieldName === "password") {
+              field.addEventListener("input", updatePasswordRequirements);
+            }
+          }
+        });
+      }
+
+      function validateField(fieldName) {
+        const field = document.getElementById(fieldName);
+        const errorElement = document.getElementById(fieldName + "Error");
+        const rule = validationRules[fieldName];
+        if (!field || !rule) return true;
+
+        const value =
+          field.type === "checkbox" ? field.checked : field.value.trim();
+
+        if (rule.required && (!value || value === "")) {
+          showFieldError(field, errorElement, rule.message);
+          return false;
+        }
+
+        if (rule.minLength && value.length < rule.minLength) {
+          showFieldError(field, errorElement, rule.message);
+          return false;
+        }
+
+        if (rule.pattern && !rule.pattern.test(value)) {
+          showFieldError(field, errorElement, rule.message);
+          return false;
+        }
+
+        if (rule.custom && !rule.custom(value)) {
+          showFieldError(field, errorElement, rule.message);
+          return false;
+        }
+
+        clearFieldError(fieldName);
+        return true;
+      }
+
+      function validateForm() {
+        let isValid = true;
+        const errors = [];
+
+        Object.keys(validationRules).forEach((fieldName) => {
+          if (!validateField(fieldName)) {
+            isValid = false;
+            errors.push(validationRules[fieldName].message);
+          }
+        });
+
+        return { isValid, errors };
+      }
+
+      function showFieldError(field, errorElement, message) {
+        field.classList.add(
+          "border-red-500",
+          "focus:ring-red-500",
+          "focus:border-red-500"
+        );
+        field.classList.remove(
+          "border-gray-300",
+          "focus:ring-blue-500",
+          "focus:border-blue-500"
+        );
+        if (errorElement) {
+          errorElement.textContent = message;
+          errorElement.classList.remove("hidden");
+        }
+      }
+
+      function clearFieldError(fieldName) {
+        const field = document.getElementById(fieldName);
+        const errorElement = document.getElementById(fieldName + "Error");
+        if (field) {
+          field.classList.remove(
+            "border-red-500",
+            "focus:ring-red-500",
+            "focus:border-red-500"
+          );
+          field.classList.add(
+            "border-gray-300",
+            "focus:ring-blue-500",
+            "focus:border-blue-500"
+          );
+        }
+        if (errorElement) errorElement.classList.add("hidden");
+      }
+
+      function showValidationSummary(errors) {
+        errorList.innerHTML = "";
+        errors.forEach((error) => {
+          const li = document.createElement("li");
+          li.textContent = `• ${error}`;
+          errorList.appendChild(li);
+        });
+        validationSummary.classList.remove("hidden");
+        validationSummary.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
+      }
+
+      function hideValidationSummary() {
+        validationSummary.classList.add("hidden");
+      }
+
+      function updatePasswordRequirements() {
+        const password = document.getElementById("password").value;
+        const checks = {
+          length: password.length >= 8,
+          uppercase: /[A-Z]/.test(password),
+          lowercase: /[a-z]/.test(password),
+          number: /\d/.test(password),
+        };
+        Object.keys(checks).forEach((key) => {
+          const elem = document.getElementById(`req-${key}`);
+          if (elem) {
+            const icon = elem.querySelector("i");
+            icon.className = checks[key]
+              ? "fas fa-check text-green-500 mr-2 w-4"
+              : "fas fa-times text-red-500 mr-2 w-4";
+          }
+        });
+      }
+
+      function handleSubmit(event) {
+        event.preventDefault();
+        hideValidationSummary();
+
+        const validation = validateForm();
+        if (!validation.isValid) {
+          showValidationSummary(validation.errors);
+          return;
+        }
+
+        const submitText = document.getElementById("submitText");
+        const submitSpinner = document.getElementById("submitSpinner");
+
+        submitBtn.disabled = true;
+        submitText.textContent = "Creating Account...";
+        submitSpinner.classList.remove("hidden");
+
+        // Allow form submission to proceed
+        setTimeout(() => {
+          form.submit();
+        }, 1000); // Brief delay to show spinner
+      }
+    </script>
+  </body>
+</html>

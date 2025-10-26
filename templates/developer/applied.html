@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Applications</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-custom': '#4f87ff',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <div class="bg-white border-b border-gray-200 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center">
+                <button class="text-gray-600 hover:text-gray-800 mr-4">
+                    <a href="./find_jobs.html"><i class="fas fa-arrow-left"></i></a>
+                </button>
+                <div>
+                    <h1 class="text-xl font-bold text-gray-900">My Applications</h1>
+                    <p class="text-sm text-gray-600">Track your applications with AI-powered insights</p>
+                </div>
+            </div>
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                <a href="./find_jobs.html">Find More Jobs</a>
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="max-w-7xl mx-auto px-6 py-6">
+        <div class="grid grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg p-6 text-center border border-gray-200">
+                <div class="text-2xl font-bold text-gray-900 mb-1">7</div>
+                <div class="text-sm text-gray-600">Total Applications</div>
+            </div>
+            <div class="bg-white rounded-lg p-6 text-center border border-gray-200">
+                <div class="text-2xl font-bold text-gray-900 mb-1">2</div>
+                <div class="text-sm text-gray-600">Under Review</div>
+            </div>
+            <div class="bg-white rounded-lg p-6 text-center border border-gray-200">
+                <div class="text-2xl font-bold text-yellow-600 mb-1">87%</div>
+                <div class="text-sm text-gray-600">Avg Match Score</div>
+            </div>
+            <div class="bg-white rounded-lg p-6 text-center border border-gray-200">
+                <div class="text-2xl font-bold text-red-500 mb-1">88%</div>
+                <div class="text-sm text-gray-600">Technical Score</div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex space-x-8 mb-6 border-b border-gray-200">
+            <button class="pb-2 text-blue-600 border-b-2 border-blue-600 font-medium">All Applications</button>
+            <button class="pb-2 text-gray-600 hover:text-gray-800">Active</button>
+            <button class="pb-2 text-gray-600 hover:text-gray-800">Completed</button>
+        </div>
+
+        <!-- Applications List -->
+        <div class="space-y-6">
+            <!-- Application 1 - Senior Full Stack Developer -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">Senior Full Stack Developer</h3>
+                            <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium">Position Matches</span>
+                        </div>
+                        <p class="text-gray-600">TechFlow Inc.</p>
+                    </div>
+                    <div class="text-right text-sm text-gray-500">
+                        <div>Applied: 7/20/2025</div>
+                        <div>Last Update: 7/22/2025</div>
+                    </div>
+                </div>
+
+                <!-- Status Update -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
+                        <div>
+                            <h4 class="font-medium text-blue-900 mb-1">Status Update</h4>
+                            <p class="text-blue-800 text-sm">Great news! You've been selected for the technical screening round.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <!-- Match Analysis -->
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">Match Analysis</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Overall Match</span>
+                                <div class="flex items-center">
+                                    <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 96%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">96%</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Technical Score</span>
+                                <div class="flex items-center">
+                                    <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 94%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">94%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Analysis -->
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">Profile Analysis</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Code Quality</span>
+                                <span class="font-medium">97%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Activity Level</span>
+                                <span class="font-medium">92%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Exact Matches</span>
+                                <span class="font-medium">8</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Problem Solving</span>
+                                <span class="font-medium">91%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Algorithms Thinking</span>
+                                <span class="font-medium">88%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Assessment Required -->
+                <div class="mt-4 bg-gray-50 rounded-lg p-4">
+                    <h4 class="font-medium text-gray-900 mb-2">Technical Assessment Required</h4>
+                    <p class="text-sm text-gray-600 mb-3">Complete coding challenges to help our team evaluate your skills and determine your technical background.</p>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded">System Design Interview</span>
+                        <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded">Algorithm Challenge</span>
+                        <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded">Pair Technical Refview</span>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex justify-end">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                        <a href="./assesment.html">Start Assessment</a>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Application 2 - Machine Learning Engineer -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">Machine Learning Engineer</h3>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">Great Match</span>
+                        </div>
+                        <p class="text-gray-600">AI Dynamics</p>
+                    </div>
+                    <div class="text-right text-sm text-gray-500">
+                        <div>Applied: 2024-07-15</div>
+                        <div>Last Update: 2024-07-20</div>
+                    </div>
+                </div>
+
+                <!-- Status Update -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
+                        <div>
+                            <h4 class="font-medium text-blue-900 mb-1">Status Update</h4>
+                            <p class="text-blue-800 text-sm">Your technical profile is currently under review by the hiring team.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <!-- Match Analysis -->
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">Match Analysis</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Overall Match</span>
+                                <div class="flex items-center">
+                                    <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 91%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">91%</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Technical Score</span>
+                                <div class="flex items-center">
+                                    <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 89%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">89%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Analysis -->
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">Profile Analysis</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Code Quality</span>
+                                <span class="font-medium">91%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Activity Level</span>
+                                <span class="font-medium">87%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Project Complexity</span>
+                                <span class="font-medium">85%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Problem Solving</span>
+                                <span class="font-medium">87%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Algorithms Thinking</span>
+                                <span class="font-medium">84%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Review in Progress -->
+                <div class="mt-4 bg-blue-50 rounded-lg p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-cog fa-spin text-blue-600 mt-1 mr-3"></i>
+                        <div>
+                            <h4 class="font-medium text-blue-900 mb-1">Technical Review in Progress</h4>
+                            <p class="text-blue-800 text-sm">Our AI systems have analyzed your GitHub and LeetCode profiles. The hiring team is now reviewing your technical background.</p>
+                            <p class="text-blue-700 text-sm mt-2">Your ranking among current applicants at this company is extremely strong, with several remarkable features.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-sm text-gray-600">
+                    <i class="fas fa-clock mr-1"></i>
+                    This AI Analysis update within 2-5 business days
+                </div>
+            </div>
+
+            <!-- Application 3 - Frontend Developer -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">Frontend Developer</h3>
+                            <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-medium">Not Matched</span>
+                        </div>
+                        <p class="text-gray-600">DesignTech</p>
+                    </div>
+                    <div class="text-right text-sm text-gray-500">
+                        <div>Applied: 2024-07-12</div>
+                        <div>Last Update: 2024-07-16</div>
+                    </div>
+                </div>
+
+                <!-- Status Update -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
+                        <div>
+                            <h4 class="font-medium text-blue-900 mb-1">Status Update</h4>
+                            <p class="text-blue-800 text-sm">Unfortunately, we don't see matching keywords with your application.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <!-- Match Analysis -->
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">Match Analysis</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Overall Match</span>
+                                <div class="flex items-center">
+                                    <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 65%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">65%</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Technical Score</span>
+                                <div class="flex items-center">
+                                    <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 76%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">76%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Analysis -->
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">Profile Analysis</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Code Quality</span>
+                                <span class="font-medium">67%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Activity Level</span>
+                                <span class="font-medium">52%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Exact Matches</span>
+                                <span class="font-medium">2</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Problem Solving</span>
+                                <span class="font-medium">71%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Algorithms Thinking</span>
+                                <span class="font-medium">78%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Application Update -->
+                <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-triangle text-red-600 mt-1 mr-3"></i>
+                        <div>
+                            <h4 class="font-medium text-red-900 mb-1">Application Update</h4>
+                            <p class="text-red-800 text-sm">Thank you for your interest. While your technical skills are solid, we decided to move forward with candidates who have more specific experience with our tech stack (React, Node.js, etc.).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-sm text-gray-600">
+                    <i class="fas fa-lightbulb mr-1"></i>
+                    Consider feedback and improvement suggestions here to grow ahead
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

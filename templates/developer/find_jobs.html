@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI-Powered Job Matching - SmartHire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .job-card {
+        transition: all 0.2s ease-in-out;
+      }
+      .job-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .match-badge {
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+      .spinner {
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #3498db;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        min-width: 300px;
+        transform: translateX(400px);
+        transition: transform 0.3s ease-in-out;
+      }
+      .notification.show {
+        transform: translateX(0);
+      }
+      .notification.hide {
+        transform: translateX(400px);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- Notification Container -->
+    <div id="notification" class="notification"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center">
+          <button class="mr-4 p-2 text-gray-600 hover:text-gray-800">
+            <a href="{% url 'developer:dashboard' %}"><i class="fas fa-arrow-left text-lg"></i></a>
+          </button>
+          <div>
+            <h1 class="text-2xl font-bold text-blue-600">
+              AI-Powered Job Matching
+            </h1>
+            <p class="text-sm text-gray-600">
+              {% if total_jobs_analyzed %}
+                {{ top_recommendations|length }} jobs matched from {{ total_jobs_analyzed }} analyzed
+              {% else %}
+                Finding the best matches for your profile
+              {% endif %}
+            </p>
+          </div>
+        </div>
+        <button
+          class="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm"
+        >
+          <a href="{% url 'developer:applications' %}"><i class="fas fa-file-alt mr-2"></i>My Applications</a>
+        </button>
+      </div>
+
+      {% if error %}
+      <!-- Error Message -->
+      <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+        <div class="flex">
+          <i class="fas fa-exclamation-triangle text-red-400 mt-1 mr-3"></i>
+          <div>
+            <h3 class="text-sm font-medium text-red-800">Profile Required</h3>
+            <p class="text-sm text-red-700 mt-1">{{ error }}</p>
+            <a href="#" class="text-sm font-medium text-red-600 hover:text-red-500 underline mt-2 inline-block">Complete Profile →</a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if not error %}
+      <!-- User Stats -->
+      <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800">{{ user_stats.total_skills }}</h3>
+            <p class="text-sm text-gray-600">Skills Listed</p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800">{{ user_stats.experience_level|title }}</h3>
+            <p class="text-sm text-gray-600">Experience Level</p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800">{{ user_stats.location|default:"Not Specified" }}</h3>
+            <p class="text-sm text-gray-600">Location</p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800">
+              {% if user_stats.preferred_salary %}
+                ${{ user_stats.preferred_salary|floatformat:0 }}k
+              {% else %}
+                Not Set
+              {% endif %}
+            </h3>
+            <p class="text-sm text-gray-600">Expected Salary</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search and Filters -->
+      <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+        <div
+          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+        >
+          <div class="flex-1 relative">
+            <i
+              class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            ></i>
+            <input
+              type="text"
+              placeholder="Search jobs, companies, or technologies..."
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              id="job-search"
+            />
+          </div>
+          <div class="flex items-center space-x-4">
+            <!-- Sort Dropdown -->
+            <div class="relative">
+              <select
+                class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                id="sort-select"
+              >
+                <option value="match">Best Match</option>
+                <option value="salary">Highest Salary</option>
+                <option value="recent">Most Recent</option>
+              </select>
+              <i
+                class="fas fa-chevron-down absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"
+              ></i>
+            </div>
+
+            <!-- Match Percentage Filter -->
+            <div class="relative">
+              <select
+                class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                id="match-filter"
+              >
+                <option value="all">All Matches</option>
+                <option value="excellent">85%+ Match</option>
+                <option value="good">70-84% Match</option>
+                <option value="fair">55-69% Match</option>
+                <option value="potential">40-54% Match</option>
+              </select>
+              <i
+                class="fas fa-chevron-down absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job Cards -->
+      <div class="space-y-6" id="job-container">
+        {% for job_match in top_recommendations %}
+        {% with job=job_match.job match_data=job_match.match_data %}
+        <div class="bg-white rounded-lg shadow-sm p-6 job-card" data-match-score="{{ match_data.overall_score }}" data-salary="{{ job.salary_max|default:0 }}" data-created="{{ job.created_at|date:'Y-m-d' }}">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex-1">
+              <div class="flex items-center mb-2">
+                <h3
+                  class="text-lg font-semibold text-blue-600 mr-3 hover:underline cursor-pointer job-title"
+                  data-job-id="{{ job.id }}"
+                >
+                  {{ job.title }}
+                </h3>
+                <span class="px-2 py-1 rounded text-xs match-badge
+                  {% if match_data.overall_score >= 85 %}
+                    bg-green-100 text-green-700
+                  {% elif match_data.overall_score >= 70 %}
+                    bg-blue-100 text-blue-700
+                  {% elif match_data.overall_score >= 55 %}
+                    bg-yellow-100 text-yellow-700
+                  {% else %}
+                    bg-gray-100 text-gray-700
+                  {% endif %}
+                ">
+                  {{ match_data.overall_score }}% AI Match
+                </span>
+              </div>
+
+              <div class="flex items-center text-sm text-gray-600 mb-3">
+                <i class="fas fa-building mr-2"></i>
+                <span class="font-medium">{{ job.recruiter.recruiterprofile.company|default:"Company Name" }}</span>
+              </div>
+
+              <div
+                class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4"
+              >
+                <div class="flex items-center">
+                  <i class="fas fa-map-marker-alt mr-1"></i>
+                  <span>{{ job.location|default:"Location not specified" }}</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-clock mr-1"></i>
+                  <span>{{ job.get_job_type_display }}</span>
+                </div>
+                {% if job.salary_min and job.salary_max %}
+                <div class="flex items-center">
+                  <i class="fas fa-dollar-sign mr-1"></i>
+                  <span>${{ job.salary_min|floatformat:0 }}k - ${{ job.salary_max|floatformat:0 }}k</span>
+                </div>
+                {% elif job.salary_min %}
+                <div class="flex items-center">
+                  <i class="fas fa-dollar-sign mr-1"></i>
+                  <span>${{ job.salary_min|floatformat:0 }}k+</span>
+                </div>
+                {% endif %}
+              </div>
+
+              <p class="text-gray-700 mb-4">
+                {{ job.description|truncatewords:20|default:"Join our team and work on exciting projects with modern technologies." }}
+              </p>
+            </div>
+            <div class="text-right text-sm text-gray-500 ml-4">
+              {{ job.created_at|timesince }} ago
+            </div>
+          </div>
+
+          <!-- AI Analysis -->
+          <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mb-4">
+            <div class="flex items-start">
+              <i class="fas fa-robot text-blue-500 mt-1 mr-3"></i>
+              <div>
+                <p class="text-sm font-medium text-blue-800 mb-1">
+                  AI Analysis ({{ match_data.match_category }}):
+                </p>
+                <div class="text-sm text-blue-700">
+                  {% if match_data.matched_skills %}
+                    <p class="mb-1">✓ Matched skills: {{ match_data.matched_skills|join:", "|truncatewords:5 }}</p>
+                  {% endif %}
+                  {% if match_data.missing_skills %}
+                    <p>• Missing: {{ match_data.missing_skills|join:", "|truncatewords:3 }}</p>
+                  {% endif %}
+                  {% if not match_data.matched_skills and not match_data.missing_skills %}
+                    <p>Skills analysis based on your profile and job requirements.</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tech Stack -->
+          {% if job.requirements %}
+          <div class="flex flex-wrap gap-2 mb-4">
+            {% for skill in job.requirements|slice:":5" %}
+            <span class="
+              {% if skill.lower in match_data.matched_skills|join:','|lower %}
+                bg-green-100 text-green-700
+              {% else %}
+                bg-gray-100 text-gray-600
+              {% endif %}
+              px-3 py-1 rounded-full text-sm
+            ">
+              {{ skill }}
+            </span>
+            {% endfor %}
+            {% if job.requirements|length > 5 %}
+            <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">
+              +{{ job.requirements|length|add:"-5" }} more
+            </span>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          <!-- Match Stats -->
+          <div class="flex justify-between items-center text-sm">
+            <div class="text-gray-600">
+              <span class="font-medium">Skills: {{ match_data.skill_score }}%</span> •
+              <span class="font-medium">Experience: {{ match_data.experience_score }}%</span> •
+              <span class="font-medium">Location: {{ match_data.location_score }}%</span>
+              {% if match_data.salary_score %}
+              • <span class="font-medium">Salary: {{ match_data.salary_score }}%</span>
+              {% endif %}
+            </div>
+            <button
+              class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm apply-btn relative"
+              data-job-id="{{ job.id }}"
+              data-job-title="{{ job.title }}"
+              data-company="{{ job.recruiter.recruiterprofile.company|default:'Company' }}"
+            >
+              <span class="btn-text">Apply Now</span>
+              <div class="spinner hidden absolute inset-0 flex items-center justify-center">
+                <div class="spinner"></div>
+              </div>
+            </button>
+          </div>
+        </div>
+        {% endwith %}
+        {% empty %}
+        <!-- No Jobs Found -->
+        <div class="bg-white rounded-lg shadow-sm p-8 text-center">
+          <i class="fas fa-briefcase text-4xl text-gray-300 mb-4"></i>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">No Jobs Found</h3>
+          <p class="text-gray-600 mb-4">We couldn't find any jobs matching your profile at the moment.</p>
+          <div class="space-y-2">
+            <p class="text-sm text-gray-500">Try:</p>
+            <ul class="text-sm text-gray-500 space-y-1">
+              <li>• Updating your skills in your profile</li>
+              <li>• Broadening your location preferences</li>
+              <li>• Checking back later for new opportunities</li>
+            </ul>
+          </div>
+          <a href="#" class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+            Update Profile
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Match Categories Summary -->
+      {% if excellent_matches or good_matches or fair_matches %}
+      <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Match Summary</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+          {% if excellent_matches %}
+          <div class="bg-green-50 rounded-lg p-4">
+            <h4 class="text-2xl font-bold text-green-700">{{ excellent_matches|length }}</h4>
+            <p class="text-sm text-green-600">Excellent Matches (85%+)</p>
+          </div>
+          {% endif %}
+          {% if good_matches %}
+          <div class="bg-blue-50 rounded-lg p-4">
+            <h4 class="text-2xl font-bold text-blue-700">{{ good_matches|length }}</h4>
+            <p class="text-sm text-blue-600">Good Matches (70-84%)</p>
+          </div>
+          {% endif %}
+          {% if fair_matches %}
+          <div class="bg-yellow-50 rounded-lg p-4">
+            <h4 class="text-2xl font-bold text-yellow-700">{{ fair_matches|length }}</h4>
+            <p class="text-sm text-yellow-600">Fair Matches (55-69%)</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Load More -->
+      {% if top_recommendations|length >= 20 %}
+      <div class="text-center mt-8">
+        <button
+          class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+          id="load-more-btn"
+        >
+          Load More Jobs
+        </button>
+      </div>
+      {% endif %}
+      {% endif %}
+    </div>
+
+    <script>
+      // Notification system
+      function showNotification(message, type = 'success') {
+        const notification = document.getElementById('notification');
+        const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+        
+        notification.innerHTML = `
+          <div class="${bgColor} text-white px-6 py-4 rounded-lg shadow-lg flex items-center justify-between">
+            <div class="flex items-center">
+              <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'} mr-3"></i>
+              <span>${message}</span>
+            </div>
+            <button onclick="hideNotification()" class="ml-4 text-white hover:text-gray-200 focus:outline-none">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        `;
+        
+        notification.classList.remove('hide');
+        notification.classList.add('show');
+        
+        // Auto hide after 5 seconds
+        setTimeout(() => {
+          hideNotification();
+        }, 5000);
+      }
+
+      function hideNotification() {
+        const notification = document.getElementById('notification');
+        notification.classList.remove('show');
+        notification.classList.add('hide');
+        
+        // Completely remove the content after animation
+        setTimeout(() => {
+          notification.innerHTML = '';
+          notification.classList.remove('hide');
+        }, 300);
+      }
+
+      // CSRF token helper
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      // Search functionality
+      const searchInput = document.getElementById('job-search');
+      const jobCards = document.querySelectorAll('.job-card');
+      
+      searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        
+        jobCards.forEach(card => {
+          const title = card.querySelector('.job-title').textContent.toLowerCase();
+          const company = card.querySelector('.fa-building').nextElementSibling.textContent.toLowerCase();
+          const skills = Array.from(card.querySelectorAll('.rounded-full')).map(skill => 
+            skill.textContent.toLowerCase()
+          ).join(' ');
+          
+          const isVisible = title.includes(searchTerm) || 
+                           company.includes(searchTerm) || 
+                           skills.includes(searchTerm);
+                           
+          card.style.display = isVisible ? 'block' : 'none';
+        });
+      });
+
+      // Sort functionality
+      const sortSelect = document.getElementById('sort-select');
+      const jobContainer = document.getElementById('job-container');
+      
+      sortSelect.addEventListener('change', function(e) {
+        const sortBy = e.target.value;
+        const jobCards = Array.from(document.querySelectorAll('.job-card'));
+        
+        jobCards.sort((a, b) => {
+          switch(sortBy) {
+            case 'match':
+              return parseFloat(b.dataset.matchScore) - parseFloat(a.dataset.matchScore);
+            case 'salary':
+              return parseFloat(b.dataset.salary) - parseFloat(a.dataset.salary);
+            case 'recent':
+              return new Date(b.dataset.created) - new Date(a.dataset.created);
+            default:
+              return 0;
+          }
+        });
+        
+        jobCards.forEach(card => jobContainer.appendChild(card));
+      });
+
+      // Match filter functionality
+      const matchFilter = document.getElementById('match-filter');
+      
+      matchFilter.addEventListener('change', function(e) {
+        const filterValue = e.target.value;
+        
+        jobCards.forEach(card => {
+          const matchScore = parseFloat(card.dataset.matchScore);
+          let isVisible = true;
+          
+          switch(filterValue) {
+            case 'excellent':
+              isVisible = matchScore >= 85;
+              break;
+            case 'good':
+              isVisible = matchScore >= 70 && matchScore < 85;
+              break;
+            case 'fair':
+              isVisible = matchScore >= 55 && matchScore < 70;
+              break;
+            case 'potential':
+              isVisible = matchScore >= 40 && matchScore < 55;
+              break;
+            case 'all':
+            default:
+              isVisible = true;
+          }
+          
+          card.style.display = isVisible ? 'block' : 'none';
+        });
+      });
+
+      // Apply button functionality with AJAX
+      document.querySelectorAll('.apply-btn').forEach(button => {
+        button.addEventListener('click', async function() {
+          const jobId = this.dataset.jobId;
+          const jobTitle = this.dataset.jobTitle;
+          const company = this.dataset.company;
+          const btnText = this.querySelector('.btn-text');
+          const spinner = this.querySelector('.spinner');
+          
+          // Show loading state
+          btnText.classList.add('hidden');
+          spinner.classList.remove('hidden');
+          this.disabled = true;
+          
+          try {
+            const formData = new FormData();
+            formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+            
+            const response = await fetch(`/developer/apply/${jobId}/`, {
+              method: 'POST',
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+              },
+              body: formData,
+            });
+            
+            // Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+              const data = await response.json();
+              
+              if (response.ok && data.success) {
+                showNotification(`Successfully applied to ${jobTitle} at ${company}!`, 'success');
+                // Update button state
+                this.innerHTML = '<i class="fas fa-check mr-2"></i>Applied';
+                this.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                this.classList.add('bg-green-600', 'cursor-not-allowed');
+                this.disabled = true;
+              } else {
+                showNotification(data.message || 'Application failed. Please try again.', 'error');
+                // Reset button state
+                btnText.classList.remove('hidden');
+                spinner.classList.add('hidden');
+                this.disabled = false;
+              }
+            } else {
+              // If we get HTML response, the application might have succeeded but redirected
+              // Let's check by trying to parse any error messages
+              const text = await response.text();
+              
+              if (response.ok) {
+                // Assume success if we get a 200 response
+                showNotification(`Successfully applied to ${jobTitle} at ${company}!`, 'success');
+                this.innerHTML = '<i class="fas fa-check mr-2"></i>Applied';
+                this.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                this.classList.add('bg-green-600', 'cursor-not-allowed');
+                this.disabled = true;
+              } else {
+                showNotification('Application failed. Please try again.', 'error');
+                btnText.classList.remove('hidden');
+                spinner.classList.add('hidden');
+                this.disabled = false;
+              }
+            }
+          } catch (error) {
+            console.error('Error applying to job:', error);
+            
+            // Since the application might have actually succeeded, let's be optimistic
+            // and check if we can detect success from the error
+            showNotification(`Application submitted! Check your applications page to confirm.`, 'info');
+            
+            // Update button to a "checking" state
+            this.innerHTML = '<i class="fas fa-clock mr-2"></i>Processing';
+            this.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            this.classList.add('bg-yellow-600', 'cursor-not-allowed');
+            this.disabled = true;
+          }
+        });
+      });
+
+      // Job title click to view details
+      document.querySelectorAll('.job-title').forEach(title => {
+        title.addEventListener('click', function() {
+          const jobId = this.dataset.jobId;
+          // Redirect to job details page
+          window.location.href = `/jobs/detail/${jobId}/`;
+        });
+      });
+
+      // Button click animation
+      document.querySelectorAll('button:not(.apply-btn)').forEach(button => {
+        button.addEventListener('click', function() {
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            this.style.transform = 'scale(1)';
+          }, 150);
+        });
+      });
+
+      // Load more functionality
+      const loadMoreBtn = document.getElementById('load-more-btn');
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+          // Implement load more functionality
+          // This would typically make an AJAX request to get more jobs
+          console.log('Loading more jobs...');
+        });
+      }
+    </script>
+  </body>
+</html>

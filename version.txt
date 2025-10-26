@@ -1,0 +1,14 @@
+## [1.0.1] - 2025-08-17
+### Added - Mayuresh
+- Validation for developer/recruiter login to check if user exists in DB
+- Validation checks in recruiter signup form
+- QOL file `db_viewer` to better view DB contents
+
+## [1.0.2] - 2025-08-18
+### Added - Sunil
+- After signup redirect developer and recruiter to the login page
+
+
+### [1.0.3] - 2025-08-19
+developer - john@gmail.com password- John#123
+recruiter - sunil3@gmail.com  password- Password123

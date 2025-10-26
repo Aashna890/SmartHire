@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enhanced Profile Setup - SmartHire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center">
+          <button class="mr-4 p-2 hover:bg-gray-100 rounded-lg">
+            <a href="{% url 'developer_login' %}"
+              ><i class="fas fa-arrow-left text-gray-600"></i
+            ></a>
+          </button>
+          <div>
+            <h1 class="text-2xl font-semibold text-blue-600">
+              Enhanced Profile Setup
+            </h1>
+            <p class="text-gray-500">Step 1 of 3</p>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <button class="p-2 hover:bg-gray-100 rounded-lg">
+            <i class="fas fa-code text-gray-600"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="mb-12">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium"
+            >
+              1
+            </div>
+            <span class="ml-3 text-sm font-medium text-blue-600"
+              >Personal Info</span
+            >
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-medium"
+            >
+              2
+            </div>
+            <span class="ml-3 text-sm text-gray-500">Connect Accounts</span>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-medium"
+            >
+              3
+            </div>
+            <span class="ml-3 text-sm text-gray-500">Review</span>
+          </div>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div class="bg-blue-600 h-2 rounded-full" style="width: 33.33%"></div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+        <!-- Section Header -->
+        <div class="flex items-start mb-8">
+          <div class="bg-blue-100 p-3 rounded-lg mr-4">
+            <i class="fas fa-user text-blue-600 text-xl"></i>
+          </div>
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">
+              Personal Information
+            </h2>
+            <p class="text-gray-600 mt-1">Basic details about yourself</p>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <form
+          id="profileForm"
+          class="space-y-6"
+          method="POST"
+          action="{% url 'signup_step1' %}"
+          enctype="multipart/form-data"
+          novalidate
+        >
+          {% csrf_token %}
+
+          <!-- Name and Email Row -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label
+                for="username"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Full Name <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="John Doe"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              />
+              <div class="error-message text-red-500 text-sm mt-1 hidden"></div>
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Email <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="john@example.com"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              />
+              <div class="error-message text-red-500 text-sm mt-1 hidden"></div>
+            </div>
+          </div>
+
+          <!-- Phone and Location Row -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label
+                for="phone"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Phone <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="+91 9876543210 or +1 (555) 123-4567"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              />
+              <div class="error-message text-red-500 text-sm mt-1 hidden"></div>
+            </div>
+            <div>
+              <label
+                for="location"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Location <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                placeholder="San Francisco, CA"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              />
+              <div class="error-message text-red-500 text-sm mt-1 hidden"></div>
+            </div>
+          </div>
+
+          <!-- Password and Confirm Password -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label
+                for="password"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Password <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              />
+              <div class="error-message text-red-500 text-sm mt-1 hidden"></div>
+            </div>
+            <div>
+              <label
+                for="confirm_password"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Confirm Password <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                placeholder="Re-enter your password"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              />
+              <div class="error-message text-red-500 text-sm mt-1 hidden"></div>
+            </div>
+          </div>
+
+          <!-- Professional Title -->
+          <div>
+            <label
+              for="title"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Professional Title <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Senior Software Engineer"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+            />
+            <div class="error-message text-red-500 text-sm mt-1 hidden"></div>
+          </div>
+
+          <!-- Years of Experience and Salary -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label
+                for="experience"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Years of Experience <span class="text-red-500">*</span>
+              </label>
+              <select
+                id="experience"
+                name="experience"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              >
+                <option value="">Select experience</option>
+                <option value="0-1">0-1 years</option>
+                <option value="2-3">2-3 years</option>
+                <option value="4-5">4-5 years</option>
+                <option value="6-8">6-8 years</option>
+                <option value="9-12">9-12 years</option>
+                <option value="13+">13+ years</option>
+              </select>
+              <div class="error-message text-red-500 text-sm mt-1 hidden"></div>
+            </div>
+            <div>
+              <label
+                for="salary"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Expected Salary (Annual USD) <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                id="salary"
+                name="salary"
+                placeholder="75000"
+                min="0"
+                max="500000"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              />
+              <div class="error-message text-red-500 text-sm mt-1 hidden"></div>
+            </div>
+          </div>
+
+          <!-- Professional Summary -->
+          <div>
+            <label
+              for="summary"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Professional Summary <span class="text-red-500">*</span>
+            </label>
+            <textarea
+              id="summary"
+              name="summary"
+              rows="4"
+              placeholder="Tell us about your experience, skills, and what you're looking for..."
+              required
+              minlength="50"
+              maxlength="500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors resize-none"
+            ></textarea>
+            <div class="flex justify-between items-center mt-1">
+              <div class="error-message text-red-500 text-sm hidden"></div>
+              <div class="text-sm text-gray-500">
+                <span id="charCount">0</span>/500 characters (minimum 50)
+              </div>
+            </div>
+          </div>
+
+          <!-- Resume Upload -->
+          <div>
+            <label
+              for="resume"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Upload Resume <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="file"
+              id="resume"
+              name="resume"
+              accept=".pdf,.doc,.docx"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors bg-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            />
+            <div class="error-message text-red-500 text-sm mt-1 hidden"></div>
+            <p class="text-sm text-gray-500 mt-1">
+              Accepted formats: .pdf, .doc, .docx
+            </p>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-4 flex justify-between items-center">
+            <a
+              href="{% url 'developer_login' %}"
+              class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              Previous
+            </a>
+            <button
+              type="submit"
+              class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Form validation object
+      const FormValidator = {
+        form: document.getElementById("profileForm"),
+        nextBtn: document.getElementById("nextBtn"),
+
+        // Validation rules
+        validators: {
+          fullName: (value) => {
+            if (!value.trim()) return "Full name is required";
+            if (value.trim().length < 2)
+              return "Name must be at least 2 characters";
+            if (!/^[a-zA-Z\s'-]+$/.test(value))
+              return "Name can only contain letters, spaces, hyphens, and apostrophes";
+            if (value.trim().split(" ").length < 2)
+              return "Please enter both first and last name";
+            return null;
+          },
+
+          email: (value) => {
+            if (!value.trim()) return "Email is required";
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value))
+              return "Please enter a valid email address";
+            return null;
+          },
+
+          phone: (value) => {
+            if (!value.trim()) return "Phone number is required";
+            // Remove all non-digits to check
+            const digits = value.replace(/\D/g, "");
+            if (digits.length < 10)
+              return "Phone number must be at least 10 digits";
+            if (digits.length > 15)
+              return "Phone number cannot exceed 15 digits";
+            // Check if it contains any letters
+            if (/[a-zA-Z]/.test(value))
+              return "Phone number cannot contain letters";
+            return null;
+          },
+
+          location: (value) => {
+            if (!value.trim()) return "Location is required";
+            if (value.trim().length < 2) return "Please enter a valid location";
+            return null;
+          },
+
+          password: (value) => {
+            if (!value.trim()) return "Password is required";
+            if (value.length < 8)
+              return "Password must be at least 8 characters";
+            if (!/[A-Z]/.test(value))
+              return "Password must contain at least one uppercase letter";
+            if (!/[a-z]/.test(value))
+              return "Password must contain at least one lowercase letter";
+            if (!/[0-9]/.test(value))
+              return "Password must contain at least one number";
+            if (!/[!@#$%^&*]/.test(value))
+              return "Password must contain at least one special character (!@#$%^&*)";
+            return null;
+          },
+
+          confirm_password: (value) => {
+            const passwordValue = document.getElementById("password").value;
+            if (!value.trim()) return "Please confirm your password";
+            if (value !== passwordValue) return "Passwords do not match";
+            return null;
+          },
+
+          title: (value) => {
+            if (!value.trim()) return "Professional title is required";
+            if (value.trim().length < 3)
+              return "Title must be at least 3 characters";
+            return null;
+          },
+
+          experience: (value) => {
+            if (!value) return "Please select your years of experience";
+            return null;
+          },
+
+          salary: (value) => {
+            if (!value) return "Expected salary is required";
+            const num = parseFloat(value);
+            if (isNaN(num)) return "Salary must be a valid number";
+            if (num < 0) return "Salary cannot be negative";
+            if (num > 500000) return "Please enter a realistic salary amount";
+            return null;
+          },
+
+          summary: (value) => {
+            if (!value.trim()) return "Professional summary is required";
+            if (value.trim().length < 50)
+              return "Summary must be at least 50 characters";
+            if (value.trim().length > 500)
+              return "Summary cannot exceed 500 characters";
+            return null;
+          },
+
+          resume: (value) => {
+            const fileInput = document.getElementById("resume");
+            if (!fileInput.files || fileInput.files.length === 0) {
+              return "Please upload your resume";
+            }
+            const file = fileInput.files[0];
+            const validTypes = [
+              "application/pdf",
+              "application/msword",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            ];
+            if (!validTypes.includes(file.type)) {
+              return "Invalid file type. Please upload PDF or Word document";
+            }
+            // Check file size (max 5MB)
+            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            if (file.size > maxSize) {
+              return "File size too large. Please upload a file smaller than 5MB";
+            }
+            return null;
+          },
+        },
+
+        // Show error message
+        showError(fieldName, message) {
+          const field = document.getElementById(fieldName);
+          const errorDiv = field.parentNode.querySelector(".error-message");
+
+          field.classList.add("border-red-500", "ring-red-500");
+          field.classList.remove("border-gray-300");
+          errorDiv.textContent = message;
+          errorDiv.classList.remove("hidden");
+        },
+
+        // Clear error message
+        clearError(fieldName) {
+          const field = document.getElementById(fieldName);
+          const errorDiv = field.parentNode.querySelector(".error-message");
+
+          field.classList.remove("border-red-500", "ring-red-500");
+          field.classList.add("border-gray-300");
+          errorDiv.classList.add("hidden");
+        },
+
+        // Validate single field
+        validateField(fieldName) {
+          const field = document.getElementById(fieldName);
+          let value;
+
+          // Handle file input differently
+          if (fieldName === "resume") {
+            value =
+              field.files && field.files.length > 0 ? field.files[0] : null;
+          } else {
+            value = field.value;
+          }
+
+          const validator = this.validators[fieldName];
+
+          if (validator) {
+            const error = validator(value);
+            if (error) {
+              this.showError(fieldName, error);
+              return false;
+            } else {
+              this.clearError(fieldName);
+              return true;
+            }
+          }
+          return true;
+        },
+
+        // Validate entire form
+        validateForm() {
+          let isValid = true;
+
+          Object.keys(this.validators).forEach((fieldName) => {
+            if (!this.validateField(fieldName)) {
+              isValid = false;
+            }
+          });
+
+          return isValid;
+        },
+
+        // Update next button state
+        updateNextButton() {
+          const isValid = this.validateForm();
+
+          if (isValid) {
+            this.nextBtn.disabled = false;
+            this.nextBtn.classList.remove("bg-gray-400", "cursor-not-allowed");
+            this.nextBtn.classList.add(
+              "bg-blue-600",
+              "hover:bg-blue-700",
+              "cursor-pointer"
+            );
+          } else {
+            this.nextBtn.disabled = true;
+            this.nextBtn.classList.add("bg-gray-400", "cursor-not-allowed");
+            this.nextBtn.classList.remove(
+              "bg-blue-600",
+              "hover:bg-blue-700",
+              "cursor-pointer"
+            );
+          }
+        },
+
+        // Initialize form validation
+        init() {
+          // Add event listeners for real-time validation
+          Object.keys(this.validators).forEach((fieldName) => {
+            const field = document.getElementById(fieldName);
+            if (field) {
+              // For file input, use 'change' event instead of 'blur'
+              const eventType = fieldName === "resume" ? "change" : "blur";
+
+              field.addEventListener(eventType, () => {
+                this.validateField(fieldName);
+                this.updateNextButton();
+              });
+
+              // For non-file inputs, also listen to input events
+              if (fieldName !== "resume") {
+                field.addEventListener("input", () => {
+                  // Clear error on input for better UX
+                  if (field.classList.contains("border-red-500")) {
+                    this.clearError(fieldName);
+                  }
+                  this.updateNextButton();
+                });
+              }
+            }
+          });
+
+          // Character counter for summary
+          const summaryField = document.getElementById("summary");
+          const charCount = document.getElementById("charCount");
+
+          summaryField.addEventListener("input", () => {
+            charCount.textContent = summaryField.value.length;
+          });
+
+          // Phone number input handler (no auto-formatting to allow country codes)
+          const phoneField = document.getElementById("phone");
+          phoneField.addEventListener("input", (e) => {
+            // Just remove letters but keep numbers, spaces, +, -, (, )
+            let value = e.target.value.replace(/[a-zA-Z]/g, "");
+            e.target.value = value;
+          });
+
+          // Next button click handler
+          this.nextBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            if (this.validateForm()) {
+              // Store form data in sessionStorage for next step
+              const formData = new FormData(this.form);
+              const data = Object.fromEntries(formData);
+              sessionStorage.setItem("profileStep1", JSON.stringify(data));
+
+              // Proceed to next step
+              window.location.href = "../dev_signup/signup_2.html";
+            } else {
+              // Show validation errors
+              alert(
+                "Please fix all errors before proceeding to the next step."
+              );
+            }
+          });
+
+          // Initial validation check
+          this.updateNextButton();
+        },
+      };
+
+      // Initialize form validation when DOM is loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        FormValidator.init();
+      });
+
+      // Focus/blur effects for form inputs
+      document.querySelectorAll("input, textarea, select").forEach((input) => {
+        input.addEventListener("focus", function () {
+          if (!this.classList.contains("border-red-500")) {
+            this.classList.add("ring-2", "ring-blue-500", "border-transparent");
+          }
+        });
+
+        input.addEventListener("blur", function () {
+          this.classList.remove(
+            "ring-2",
+            "ring-blue-500",
+            "border-transparent"
+          );
+        });
+      });
+    </script>
+  </body>
+</html>

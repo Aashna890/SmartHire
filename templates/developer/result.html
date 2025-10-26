@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Submitted</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-custom': '#4f87ff',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="max-w-2xl mx-auto px-6 py-12 text-center">
+        <!-- Success Icon -->
+        <div class="mb-8">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                <i class="fas fa-check text-green-600 text-2xl"></i>
+            </div>
+        </div>
+
+        <!-- Success Title -->
+        <h1 class="text-3xl font-bold text-blue-custom mb-6">Assessment Submitted!</h1>
+
+        <!-- Success Message -->
+        <p class="text-gray-600 text-lg leading-relaxed mb-12 max-w-xl mx-auto">
+            Your coding assessment has been submitted successfully. The hiring team will review your solution and get back to 
+            you within 2-3 business days.
+        </p>
+
+        <!-- Stats Card -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8 max-w-md mx-auto">
+            <div class="grid grid-cols-2 gap-8">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-blue-custom mb-2">2</div>
+                    <div class="text-gray-600 text-sm">Problems Solved</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-green-600 mb-2">0m</div>
+                    <div class="text-gray-600 text-sm">Time Taken</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <button class="bg-blue-custom hover:bg-blue-600 text-white font-medium px-8 py-3 rounded-lg transition-colors">
+            <a href="./application.html">Back to Applications</a>
+        </button>
+    </div>
+</body>
+</html>

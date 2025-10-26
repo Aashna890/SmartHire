@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.username }} - SmartHire Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .circular-progress { transform: rotate(-90deg); }
+        .circular-progress circle { transition: stroke-dashoffset 0.5s ease-in-out; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="bg-blue-500 text-white p-3 rounded-lg mr-4">
+                        <i class="fas fa-user text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">{{ profile.username }}</h1>
+                        <div class="flex items-center space-x-4 text-sm text-gray-600 mt-1">
+                            {% if profile.github_url %}
+                                <a href="{{ profile.github_url }}" target="_blank" class="text-gray-700 hover:text-black">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            {% endif %}
+                            {% if profile.leetcode_url %}
+                                <a href="{{ profile.leetcode_url }}" target="_blank" class="text-blue-600 hover:underline">
+                                    <i class="fas fa-code"></i> LeetCode
+                                </a>
+                            {% endif %}
+                            <span class="text-gray-500">Technical Score: {{ github_data.score|default:"-" }}%</span>
+                            <span class="text-blue-600">LeetCode Rating: {{ leetcode_data.rating|default:"-" }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg text-sm">
+                        <a href="{% url 'developer:applications' %}"><i class="fas fa-eye mr-2"></i>Applications</a>
+                    </button>
+                    <button class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                        <a href="{% url 'jobs:find_jobs' %}"><i class="fas fa-search mr-2"></i>Find Jobs</a>
+                    </button>
+                    <button id="logoutBtn" class="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <!-- GitHub Repos -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-gray-600">GitHub Repos</span>
+                    <i class="fab fa-github text-blue-500 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-3">{{ github_data.public_repos|default:"-" }}</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-blue-500 h-2 rounded-full" style="width: {{ github_data.repos_progress|default:'0' }}%"></div>
+                </div>
+            </div>
+
+            <!-- Contributions -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-gray-600">Contributions</span>
+                    <i class="fas fa-chart-line text-green-500 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-3">{{ github_data.contributions|default:"-" }}</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-green-500 h-2 rounded-full" style="width: {{ github_data.contributions_progress|default:'0' }}%"></div>
+                </div>
+            </div>
+
+            <!-- Problems Solved -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-gray-600">Problems Solved</span>
+                    <i class="fas fa-code text-orange-500 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-3">{{ leetcode_data.total_problems_solved|default:"-" }}</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-orange-500 h-2 rounded-full" style="width: {{ leetcode_data.solved_progress|default:'0' }}%"></div>
+                </div>
+            </div>
+
+            <!-- Contest Rating -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-gray-600">Contest Rating</span>
+                    <i class="fas fa-trophy text-red-500 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-3">{{ leetcode_data.rating|default:"-" }}</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-red-500 h-2 rounded-full" style="width: {{ leetcode_data.rating_progress|default:'0' }}%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Platform Toggle & Content -->
+                <div class="bg-white rounded-lg shadow-sm">
+                    <!-- Toggle Buttons -->
+                    <div class="flex border-b border-gray-200">
+                        <button id="githubTab" class="flex-1 flex items-center justify-center px-4 py-3 text-sm font-medium text-blue-600 border-b-2 border-blue-600 bg-blue-50">
+                            <i class="fab fa-github mr-2"></i>GitHub Activity
+                        </button>
+                        <button id="leetcodeTab" class="flex-1 flex items-center justify-center px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-800">
+                            <i class="fas fa-code mr-2"></i>LeetCode Performance
+                        </button>
+                    </div>
+
+                    <!-- GitHub Content -->
+                    <div id="githubContent" class="p-6">
+                        <!-- Language Distribution -->
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Language Distribution</h3>
+                            <p class="text-sm text-gray-600 mb-6">Programming languages used across your repositories</p>
+
+                            <div class="space-y-4">
+                                {% if github_data.language_distribution %}
+                                    {% for lang, percent in github_data.language_distribution.items %}
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                                            <span class="text-sm text-gray-700">{{ lang }}</span>
+                                        </div>
+                                        <span class="text-sm text-gray-600 font-medium">{{ percent }}%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: {{ percent }}%"></div>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="text-sm text-gray-500">No repositories found.</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Top Repositories -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Top Repositories</h3>
+                            <p class="text-sm text-gray-600 mb-6">Your most starred and active projects</p>
+
+                            <div class="space-y-4">
+                                {% if github_data.top_repositories %}
+                                    {% for repo in github_data.top_repositories %}
+                                    <a href="{{ repo.url }}" target="_blank" class="block border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors cursor-pointer">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <h4 class="font-medium text-blue-600">{{ repo.name }}</h4>
+                                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">{{ repo.language }}</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-3">{{ repo.description }}</p>
+                                        <div class="flex items-center space-x-4 text-xs text-gray-500 mb-3">
+                                            <span class="flex items-center"><i class="fas fa-star mr-1"></i> {{ repo.stars }}</span>
+                                            <span class="flex items-center"><i class="fas fa-code-branch mr-1"></i> {{ repo.forks }}</span>
+                                            <span>Updated {{ repo.updated_at }}</span>
+                                        </div>
+                                    </a>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="text-sm text-gray-500">No repositories to show.</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LeetCode Content -->
+                    <div id="leetcodeContent" class="hidden p-6">
+                        <!-- Problem Solving Statistics -->
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Problem Solving Statistics</h3>
+                            <p class="text-sm text-gray-600 mb-6">Your performance across different difficulty levels</p>
+
+                            <div class="grid grid-cols-3 gap-4 mb-8">
+                                <div class="text-center p-6 bg-green-50 rounded-lg border border-green-200">
+                                    <div class="text-3xl font-bold text-green-600 mb-2">{{ leetcode_data.easy_solved|default:'0' }}</div>
+                                    <div class="text-sm text-gray-600">Easy</div>
+                                </div>
+                                <div class="text-center p-6 bg-yellow-50 rounded-lg border border-yellow-200">
+                                    <div class="text-3xl font-bold text-yellow-600 mb-2">{{ leetcode_data.medium_solved|default:'0' }}</div>
+                                    <div class="text-sm text-gray-600">Medium</div>
+                                </div>
+                                <div class="text-center p-6 bg-red-50 rounded-lg border border-red-200">
+                                    <div class="text-3xl font-bold text-red-600 mb-2">{{ leetcode_data.hard_solved|default:'0' }}</div>
+                                    <div class="text-sm text-gray-600">Hard</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Submissions -->
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Recent Submissions</h3>
+                            <p class="text-sm text-gray-600 mb-6">Your latest problem-solving activity</p>
+
+                            <div class="space-y-3">
+                                {% if leetcode_data.recent_submissions %}
+                                    {% for sub in leetcode_data.recent_submissions %}
+                                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                        <div class="flex items-center">
+                                            <span class="{{ sub.difficulty_badge.wrap }} px-2 py-1 rounded text-xs mr-3">{{ sub.difficulty_badge.chip }}</span>
+                                            <div>
+                                                <div class="font-medium text-sm">{{ sub.title }}</div>
+                                                <div class="text-xs text-gray-500">{{ sub.runtime }}{% if sub.runtime and sub.memory %} • {% endif %}{{ sub.memory }}</div>
+                                            </div>
+                                        </div>
+                                        <span class="bg-blue-500 text-white px-3 py-1 rounded text-xs">{{ sub.status }}</span>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="text-sm text-gray-500">No recent submissions available.</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Problem Categories -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Problem Categories</h3>
+                            <p class="text-sm text-gray-600 mb-6">Your expertise across different problem types</p>
+
+                            <div class="space-y-3">
+                                {% if leetcode_data.categories %}
+                                    {% for c in leetcode_data.categories %}
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-700">{{ c.name }}</span>
+                                        <div class="flex items-center">
+                                            <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                                <div class="bg-teal-500 h-2 rounded-full" style="width: {{ c.percent|default:'0' }}%"></div>
+                                            </div>
+                                            <span class="text-sm font-medium text-gray-900 w-8">{{ c.count|default:'0' }}</span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="text-sm text-gray-500">No category breakdown available.</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <button class="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                            <a href="./find_jobs.html"><i class="fas fa-briefcase mr-2"></i>Browse Jobs</a>
+                        </button>
+                        <button class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                            <i class="fas fa-chart-bar mr-2"></i>
+                            Skill Assessment
+                        </button>
+                        <button class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                            <i class="fas fa-user-edit mr-2"></i>
+                            Update Profile
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profile Strength -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Profile Strength</h3>
+                    <p class="text-sm text-gray-600 mb-6">Overall technical profile score</p>
+
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="relative w-24 h-24">
+                            <svg class="w-24 h-24 circular-progress" viewBox="0 0 36 36">
+                                <path
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="#e5e7eb"
+                                    stroke-width="3"
+                                />
+                                <path
+                                    id="profileStrengthPath"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="#3b82f6"
+                                    stroke-width="3"
+                                    stroke-dasharray="{{ profile_strength|default:'0' }}, 100"
+                                    stroke-linecap="round"
+                                    data-target="{{ profile_strength|default:'0' }}"
+                                />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold text-blue-600">{{ profile_strength|default:"0" }}%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">GitHub Activity</span>
+                            <span class="text-sm font-medium text-gray-900">{{ github_activity_label }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">LeetCode Performance</span>
+                            <span class="text-sm font-medium text-gray-900">{{ leetcode_performance_label }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Code Quality</span>
+                            <span class="text-sm font-medium text-gray-900">{{ code_quality_label }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations (kept static for now) -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recommendations</h3>
+
+                    <div class="space-y-4">
+                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                            <p class="text-sm text-blue-800">
+                                <strong>Practice more Hard problems</strong> to boost your algorithmic skills ranking.
+                            </p>
+                        </div>
+
+                        <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                            <p class="text-sm text-green-800">
+                                <strong>Add project documentation</strong> to showcase your repositories better.
+                            </p>
+                        </div>
+
+                        <div class="bg-orange-50 border-l-4 border-orange-400 p-4 rounded-r-lg">
+                            <p class="text-sm text-orange-800">
+                                <strong>Participate in contests</strong> to improve your competitive programming rating.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '{% url 'index' %}';
+            }
+        });
+
+        // Tabs
+        const githubTab = document.getElementById('githubTab');
+        const leetcodeTab = document.getElementById('leetcodeTab');
+        const githubContent = document.getElementById('githubContent');
+        const leetcodeContent = document.getElementById('leetcodeContent');
+
+        function showGitHubTab() {
+            githubTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+            githubTab.classList.remove('text-gray-600');
+
+            leetcodeTab.classList.add('text-gray-600');
+            leetcodeTab.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+
+            githubContent.classList.remove('hidden');
+            leetcodeContent.classList.add('hidden');
+        }
+
+        function showLeetCodeTab() {
+            leetcodeTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+            leetcodeTab.classList.remove('text-gray-600');
+
+            githubTab.classList.add('text-gray-600');
+            githubTab.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+
+            leetcodeContent.classList.remove('hidden');
+            githubContent.classList.add('hidden');
+        }
+
+        githubTab.addEventListener('click', showGitHubTab);
+        leetcodeTab.addEventListener('click', showLeetCodeTab);
+
+        // Animate progress bars on load
+        window.addEventListener('load', function() {
+            const progressBars = document.querySelectorAll('.bg-blue-500, .bg-green-500, .bg-orange-500, .bg-red-500, .bg-yellow-400, .bg-purple-500, .bg-teal-500');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.transition = 'width 1s ease-in-out';
+                    bar.style.width = width;
+                }, 100);
+            });
+        });
+
+        // Card hover effects
+        document.querySelectorAll('.border-gray-200').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.classList.add('shadow-md', 'transform', 'scale-105');
+                this.style.transition = 'all 0.2s ease-in-out';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.classList.remove('shadow-md', 'transform', 'scale-105');
+            });
+        });
+
+        // Circular progress animation (use data-target from path)
+        const circularProgress = document.getElementById('profileStrengthPath');
+        if (circularProgress) {
+            const target = circularProgress.dataset.target || "0";
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        circularProgress.style.strokeDasharray = "0, 100";
+                        setTimeout(() => {
+                            circularProgress.style.transition = 'stroke-dasharray 1.5s ease-in-out';
+                            circularProgress.style.strokeDasharray = target + ", 100";
+                        }, 200);
+                    }
+                });
+            });
+            observer.observe(circularProgress);
+        }
+
+        // Click animations
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => { this.style.transform = 'scale(1)'; }, 150);
+            });
+        });
+
+        // Tooltip-like lift on stats cards
+        const statsCards = document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-4 > div');
+        statsCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+                this.style.transition = 'all 0.2s ease-in-out';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+            });
+        });
+    </script>
+</body>
+</html>

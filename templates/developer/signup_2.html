@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enhanced Profile Setup - Connect Accounts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- CSRF token for Django -->
+      <input
+        type="hidden"
+        name="csrfmiddlewaretoken"
+        value="{{ csrf_token }}"
+      />
+      
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center">
+          <button class="mr-4 p-2 hover:bg-gray-100 rounded-lg">
+            <a href="{% url 'signup_step1' %}"
+              ><i class="fas fa-arrow-left text-gray-600"></i
+            ></a>
+          </button>
+          <div>
+            <h1 class="text-2xl font-semibold text-blue-600">
+              Enhanced Profile Setup
+            </h1>
+            <p class="text-gray-500">Step 2 of 3</p>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <button class="p-2 hover:bg-gray-100 rounded-lg">
+            <i class="fas fa-code text-gray-600"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="mb-12">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-medium"
+            >
+              <i class="fas fa-check text-xs"></i>
+            </div>
+            <span class="ml-3 text-sm font-medium text-green-600"
+              >Personal Info</span
+            >
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium"
+            >
+              2
+            </div>
+            <span class="ml-3 text-sm font-medium text-blue-600"
+              >Connect Accounts</span
+            >
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-medium"
+            >
+              3
+            </div>
+            <span class="ml-3 text-sm text-gray-500">Review</span>
+          </div>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div class="bg-blue-600 h-2 rounded-full" style="width: 66.66%"></div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+        <!-- Section Header -->
+        <div class="flex items-start mb-8">
+          <div class="bg-green-100 p-3 rounded-lg mr-4">
+            <i class="fas fa-link text-green-600 text-xl"></i>
+          </div>
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">
+              Connect Your Accounts
+            </h2>
+            <p class="text-gray-600 mt-1">
+              Both GitHub and LeetCode profiles are required to proceed
+            </p>
+          </div>
+        </div>
+
+        <!-- Requirements Alert -->
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
+          <div class="flex items-start">
+            <i
+              class="fas fa-exclamation-triangle text-yellow-500 mr-3 mt-0.5"
+            ></i>
+            <div>
+              <h3 class="text-yellow-800 font-medium mb-1">
+                Required Connections
+              </h3>
+              <p class="text-yellow-700 text-sm">
+                You must connect both your GitHub and LeetCode accounts to
+                continue. This helps us assess your technical skills and coding
+                experience.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- GitHub Profile Section -->
+        <div class="mb-8" id="github-section">
+          <div class="flex items-center mb-4">
+            <div class="bg-gray-900 p-2 rounded-lg mr-3">
+              <i class="fab fa-github text-white text-lg"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-gray-900">
+                GitHub Profile <span class="text-red-500">*</span>
+              </h3>
+              <p class="text-gray-600 text-sm">
+                Showcase your repositories and coding activity
+              </p>
+            </div>
+            <div id="github-status" class="hidden">
+              <i class="fas fa-check-circle text-green-500 text-xl"></i>
+            </div>
+          </div>
+
+          <!-- Input Form (Initially Visible) -->
+          <div class="github-input bg-gray-50 rounded-lg p-6 mb-4">
+            <div class="flex items-center space-x-4">
+              <input
+                type="text"
+                placeholder="Enter your GitHub username"
+                required
+                id="github-username"
+                class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              />
+              <button
+                id="github-connect"
+                class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 font-medium transition-colors"
+              >
+                Connect
+              </button>
+            </div>
+            <div
+              id="github-error"
+              class="text-red-500 text-sm mt-2 hidden"
+            ></div>
+          </div>
+
+          <!-- Connected State (Initially Hidden) -->
+          <!-- Connected State (Initially Hidden) -->
+          <div class="github-connected hidden flex items-center space-x-2">
+            <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+            <span class="text-green-600 font-medium">
+              GitHub Connected: <span id="github-connected-username"></span>
+            </span>
+          </div>
+
+          <!-- Info text (Initially Visible) -->
+          <div class="github-info flex items-start text-sm text-gray-600">
+            <i class="fas fa-info-circle mr-2 mt-0.5 text-blue-500"></i>
+            <p>
+              We'll analyze your public repositories to understand your coding
+              patterns and skills.
+            </p>
+          </div>
+        </div>
+
+        <!-- LeetCode Profile Section -->
+        <div class="mb-6" id="leetcode-section">
+          <div class="flex items-center mb-4">
+            <div class="bg-orange-100 p-2 rounded-lg mr-3">
+              <i class="fas fa-code text-orange-600 text-lg"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-gray-900">
+                LeetCode Profile <span class="text-red-500">*</span>
+              </h3>
+              <p class="text-gray-600 text-sm">
+                Display your problem-solving skills and contest performance
+              </p>
+            </div>
+            <div id="leetcode-status" class="hidden">
+              <i class="fas fa-check-circle text-green-500 text-xl"></i>
+            </div>
+          </div>
+
+          <!-- Input Form (Initially Visible) -->
+          <div class="leetcode-input bg-gray-50 rounded-lg p-6 mb-4">
+            <div class="flex items-center space-x-4">
+              <input
+                type="text"
+                placeholder="Enter your LeetCode username"
+                required
+                id="leetcode-username"
+                class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              />
+              <button
+                id="leetcode-connect"
+                class="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-medium transition-colors"
+              >
+                Connect
+              </button>
+            </div>
+            <div
+              id="leetcode-error"
+              class="text-red-500 text-sm mt-2 hidden"
+            ></div>
+          </div>
+
+          <!-- Connected State (Initially Hidden) -->
+          <div class="leetcode-connected hidden flex items-center space-x-2">
+            <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+            <span class="text-green-600 font-medium">
+              LeetCode Connected: <span id="leetcode-connected-username"></span>
+            </span>
+          </div>
+
+          <!-- Info text (Initially Visible) -->
+          <div class="leetcode-info flex items-start text-sm text-gray-600">
+            <i class="fas fa-info-circle mr-2 mt-0.5 text-blue-500"></i>
+            <p>
+              Your LeetCode statistics help us assess your algorithmic thinking
+              and problem-solving abilities.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="flex justify-between items-center mt-8">
+        <button
+          class="px-6 py-3 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+          id="previous-btn"
+        >
+          Previous
+        </button>
+        <button
+          id="next-btn"
+          class="px-8 py-3 bg-gray-400 text-white rounded-lg font-medium transition-colors cursor-not-allowed"
+          disabled
+        >
+          Next
+        </button>
+      </div>
+    </div>
+
+    <script>
+      sessionStorage.clear();
+      // Connection status tracking
+      let connectionStatus = {
+        github: false,
+        leetcode: false,
+      };
+
+      // URL validation
+      function validateURL(url, platform) {
+        if (!url.trim()) return `${platform} URL is required`;
+
+        try {
+          const parsed = new URL(url);
+          if (
+            platform === "GitHub" &&
+            !parsed.hostname.includes("github.com")
+          ) {
+            return "Enter a valid GitHub URL";
+          }
+          if (
+            platform === "LeetCode" &&
+            !parsed.hostname.includes("leetcode.com")
+          ) {
+            return "Enter a valid LeetCode URL";
+          }
+        } catch (e) {
+          return `Enter a valid ${platform} URL`;
+        }
+        return null;
+      }
+
+      // Show error
+      function showError(platform, message) {
+        const errorDiv = document.getElementById(
+          `${platform.toLowerCase()}-error`
+        );
+        const input = document.getElementById(
+          `${platform.toLowerCase()}-username`
+        );
+        input.classList.add("border-red-500");
+        errorDiv.textContent = message;
+        errorDiv.classList.remove("hidden");
+      }
+
+      // Clear error
+      function clearError(platform) {
+        const errorDiv = document.getElementById(
+          `${platform.toLowerCase()}-error`
+        );
+        const input = document.getElementById(
+          `${platform.toLowerCase()}-username`
+        );
+        input.classList.remove("border-red-500");
+        errorDiv.classList.add("hidden");
+      }
+
+      // Update Next button
+      function updateNextButton() {
+        const nextBtn = document.getElementById("next-btn");
+        if (connectionStatus.github && connectionStatus.leetcode) {
+          nextBtn.disabled = false;
+          nextBtn.classList.remove("bg-gray-400", "cursor-not-allowed");
+          nextBtn.classList.add(
+            "bg-blue-600",
+            "hover:bg-blue-700",
+            "cursor-pointer"
+          );
+        } else {
+          nextBtn.disabled = true;
+          nextBtn.classList.add("bg-gray-400", "cursor-not-allowed");
+          nextBtn.classList.remove(
+            "bg-blue-600",
+            "hover:bg-blue-700",
+            "cursor-pointer"
+          );
+        }
+      }
+
+      // Handle connection success (shows green box)
+      function handleConnectionSuccess(platform, url) {
+        document.querySelector(`.${platform}-input`).classList.add("hidden");
+        document.querySelector(`.${platform}-info`).classList.add("hidden");
+
+        document
+          .querySelector(`.${platform}-connected`)
+          .classList.remove("hidden");
+        document
+          .getElementById(`${platform}-status`)
+          .classList.remove("hidden");
+
+        document.getElementById(`${platform}-connected-username`).textContent =
+          url;
+
+        connectionStatus[platform] = true;
+        updateNextButton();
+
+        // Store in sessionStorage (optional)
+        sessionStorage.setItem(
+          `${platform}Connection`,
+          JSON.stringify({ url: url, connected: true })
+        );
+      }
+
+      // Handle disconnection
+      function handleDisconnection(platform) {
+        document.querySelector(`.${platform}-input`).classList.remove("hidden");
+        document.querySelector(`.${platform}-info`).classList.remove("hidden");
+
+        document
+          .querySelector(`.${platform}-connected`)
+          .classList.add("hidden");
+        document.getElementById(`${platform}-status`).classList.add("hidden");
+
+        document.getElementById(`${platform}-username`).value = "";
+
+        connectionStatus[platform] = false;
+        updateNextButton();
+
+        sessionStorage.removeItem(`${platform}Connection`);
+      }
+
+      // GitHub Connect button
+      document
+        .getElementById("github-connect")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          const input = document.getElementById("github-username");
+          const url = input.value.trim();
+
+          clearError("GitHub");
+          const error = validateURL(url, "GitHub");
+          if (error) {
+            showError("GitHub", error);
+            input.focus();
+            return;
+          }
+
+          handleConnectionSuccess("github", url);
+        });
+
+      // LeetCode Connect button
+      document
+        .getElementById("leetcode-connect")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          const input = document.getElementById("leetcode-username");
+          const url = input.value.trim();
+
+          clearError("LeetCode");
+          const error = validateURL(url, "LeetCode");
+          if (error) {
+            showError("LeetCode", error);
+            input.focus();
+            return;
+          }
+
+          handleConnectionSuccess("leetcode", url);
+        });
+
+      // Next button – submit form to Django
+      document
+        .getElementById("next-btn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          if (!connectionStatus.github || !connectionStatus.leetcode) {
+            alert("Please connect both GitHub and LeetCode accounts.");
+            return;
+          }
+
+          const githubURL =
+            document.getElementById("github-username").value.trim() ||
+            JSON.parse(sessionStorage.getItem("githubConnection")).url;
+          const leetcodeURL =
+            document.getElementById("leetcode-username").value.trim() ||
+            JSON.parse(sessionStorage.getItem("leetcodeConnection")).url;
+
+          const form = document.createElement("form");
+          form.method = "POST";
+          form.action = "";
+
+          const csrfToken = document.querySelector(
+            'input[name="csrfmiddlewaretoken"]'
+          ).value;
+          form.innerHTML = `
+        <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+        <input type="hidden" name="github_url" value="${githubURL}">
+        <input type="hidden" name="leetcode_url" value="${leetcodeURL}">
+    `;
+          document.body.appendChild(form);
+          form.submit();
+        });
+
+      // Previous button
+      document
+        .getElementById("previous-btn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          window.location.href = "{% url 'signup_step1' %}";
+        });
+
+      // Load saved connections from sessionStorage
+      window.addEventListener("load", function () {
+        const githubData = JSON.parse(
+          sessionStorage.getItem("githubConnection") || "{}"
+        );
+        if (githubData.connected)
+          handleConnectionSuccess("github", githubData.url);
+
+        const leetcodeData = JSON.parse(
+          sessionStorage.getItem("leetcodeConnection") || "{}"
+        );
+        if (leetcodeData.connected)
+          handleConnectionSuccess("leetcode", leetcodeData.url);
+      });
+    </script>
+  </body>
+</html>

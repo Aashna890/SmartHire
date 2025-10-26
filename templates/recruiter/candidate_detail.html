@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Details - {{ profile.username }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <!-- Header -->
+        <div class="mb-6">
+            <div class="flex items-center mb-4">
+                <a href="{% url 'recruiter:all_candidates' %}" class="flex items-center text-gray-600 hover:text-gray-800 mr-4">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    <span class="text-sm font-medium">Back to Candidates</span>
+                </a>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">{{ profile.username|default:application.developer.email }}</h1>
+                    <p class="text-gray-600">{{ profile.title|default:"Developer" }}</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="px-3 py-1 rounded-full text-sm font-medium
+                        {% if application.status == 'applied' %}bg-orange-100 text-orange-800
+                        {% elif application.status == 'under_review' %}bg-blue-100 text-blue-800
+                        {% elif application.status == 'interview' %}bg-purple-100 text-purple-800
+                        {% elif application.status == 'hired' %}bg-green-100 text-green-800
+                        {% elif application.status == 'rejected' %}bg-red-100 text-red-800
+                        {% endif %}">
+                        {{ application.get_status_display }}
+                    </span>
+                    <div class="text-yellow-500">
+                        <i class="fas fa-star"></i>
+                        <span class="ml-1">{{ match_analysis.overall_score }}% Match</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column - Candidate Info -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Basic Information -->
+                <div class="bg-white rounded-lg p-6 border">
+                    <h2 class="text-lg font-semibold mb-4">Basic Information</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600">Email</p>
+                            <p class="font-medium">{{ application.developer.email }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Location</p>
+                            <p class="font-medium">{{ profile.location|default:"Not specified" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Applied Date</p>
+                            <p class="font-medium">{{ application.applied_at|date:"M d, Y" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Days Since Applied</p>
+                            <p class="font-medium">{{ application.days_since_applied }} days</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="bg-white rounded-lg p-6 border">
+                    <h2 class="text-lg font-semibold mb-4">Skills</h2>
+                    {% if profile.skills %}
+                    <div class="flex flex-wrap gap-2">
+                        {% for skill in profile.skills %}
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-gray-600">No skills listed</p>
+                    {% endif %}
+                </div>
+
+                <!-- Experience -->
+                {% if profile.experience %}
+                <div class="bg-white rounded-lg p-6 border">
+                    <h2 class="text-lg font-semibold mb-4">Experience</h2>
+                    <p class="text-gray-700">{{ profile.experience }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Bio -->
+                {% if profile.bio %}
+                <div class="bg-white rounded-lg p-6 border">
+                    <h2 class="text-lg font-semibold mb-4">Bio</h2>
+                    <p class="text-gray-700">{{ profile.bio }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Right Column - Job Info and Actions -->
+            <div class="space-y-6">
+                <!-- Job Applied For -->
+                <div class="bg-white rounded-lg p-6 border">
+                    <h2 class="text-lg font-semibold mb-4">Applied For</h2>
+                    <div>
+                        <h3 class="font-medium text-blue-600">{{ application.job.title }}</h3>
+                        <p class="text-gray-600 text-sm">{{ application.job.department|default:"" }}</p>
+                        <p class="text-gray-600 text-sm">{{ application.job.location }}</p>
+                        <p class="text-gray-600 text-sm">{{ application.job.get_job_type_display }}</p>
+                        {% if application.job.salary_min and application.job.salary_max %}
+                        <p class="text-gray-600 text-sm">${{ application.job.salary_min|floatformat:0 }} - ${{ application.job.salary_max|floatformat:0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Match Analysis -->
+                <div class="bg-white rounded-lg p-6 border">
+                    <h2 class="text-lg font-semibold mb-4">Match Analysis</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm text-gray-600">Overall Match</span>
+                                <span class="text-sm font-medium">{{ match_analysis.overall_score }}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: {{ match_analysis.overall_score }}%"></div>
+                            </div>
+                        </div>
+                        
+                        {% if match_analysis.skill_match %}
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm text-gray-600">Skills Match</span>
+                                <span class="text-sm font-medium">{{ match_analysis.skill_match|floatformat:0 }}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: {{ match_analysis.skill_match }}%"></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Update Status -->
+                <div class="bg-white rounded-lg p-6 border">
+                    <h2 class="text-lg font-semibold mb-4">Update Status</h2>
+                    <form method="POST" action="{% url 'recruiter:update_application_status' application.id %}" id="statusUpdateForm">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Application Status</label>
+                            <select name="status" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500">
+                                <option value="applied" {% if application.status == 'applied' %}selected{% endif %}>New Application</option>
+                                <option value="under_review" {% if application.status == 'under_review' %}selected{% endif %}>Under Review</option>
+                                <option value="interview" {% if application.status == 'interview' %}selected{% endif %}>Schedule Interview</option>
+                                <option value="hired" {% if application.status == 'hired' %}selected{% endif %}>Hired</option>
+                                <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Internal Notes</label>
+                            <textarea name="notes" placeholder="Add notes about this candidate..." class="w-full px-3 py-2 border rounded-md h-20 focus:ring-2 focus:ring-blue-500">{{ application.notes|default:"" }}</textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                            Update Status & Send Notification
+                        </button>
+                    </form>
+                    
+                    <!-- Status History -->
+                    <div class="mt-4 pt-4 border-t">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Status History</h3>
+                        <div class="text-xs text-gray-500">
+                            <p>Applied: {{ application.applied_at|date:"F j, Y g:i A" }}</p>
+                            <p>Last Updated: {{ application.updated_at|date:"F j, Y g:i A" }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="bg-white rounded-lg p-6 border">
+                    <h2 class="text-lg font-semibold mb-4">Contact</h2>
+                    <div class="space-y-2">
+                        {% if profile.github_url %}
+                        <a href="{{ profile.github_url }}" target="_blank" class="flex items-center text-blue-600 hover:text-blue-800">
+                            <i class="fab fa-github mr-2"></i>
+                            GitHub
+                        </a>
+                        {% endif %}
+                        {% if profile.linkedin_url %}
+                        <a href="{{ profile.linkedin_url }}" target="_blank" class="flex items-center text-blue-600 hover:text-blue-800">
+                            <i class="fab fa-linkedin mr-2"></i>
+                            LinkedIn
+                        </a>
+                        {% endif %}
+                        {% if profile.portfolio_url %}
+                        <a href="{{ profile.portfolio_url }}" target="_blank" class="flex items-center text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-globe mr-2"></i>
+                            Portfolio
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
