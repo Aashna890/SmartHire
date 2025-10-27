@@ -1,14 +1,277 @@
-## [1.0.1] - 2025-08-17
+                              SMARTHIRE - VERSION HISTORY                                
+
+        CURRENT LOGIN CREDENTIALS
+
+Developer Account:
+  Email:    john@gmail.com
+  Password: John#123
+
+Recruiter Account:
+  Email:    sunil3@gmail.com
+  Password: Password123
+
+        VERSION RELEASES
+
+## [1.0.0] - 2025-07-23
+### Added - Sunil
+- Initial project setup with Django 5.1.1
+- Custom User model with email-based authentication
+- Project structure (accounts, developer, recruiter, jobs apps)
+- SQLite database configuration
+- Basic templates directory structure
+
+## [1.0.1] - 2025-07-25
+### Added - Sunil
+- User registration models (DeveloperProfile, RecruiterProfile)
+- Basic authentication views (login/logout)
+- Custom user manager for email-based auth
+- Password validation and hashing
+
+## [1.0.2] - 2025-07-28
+### Added - Mayuresh & Sunil
+- AI Resume Parser with NLP integration
+- spaCy model integration for named entity recognition
+- PDF text extraction using PyPDF2
+- Contact information extraction (email, phone, LinkedIn, GitHub)
+- Skills extraction with context-aware matching
+- Experience and education parsing algorithms
+
+## [1.0.3] - 2025-08-01
+### Added - Mayuresh
+- Technical skills database (programming languages, frameworks, databases)
+- Soft skills detection system
+- Work experience vs internship classification
+- Experience metrics calculation (years and months)
+- Resume data serialization to JSON
+
+## [1.0.4] - 2025-08-05
+### Added - Vicky
+- Developer signup page - Step 1 (basic information)
+- Resume file upload functionality
+- Form validation for developer signup
+- Session management for multi-step signup
+- Temporary file handling for uploaded resumes
+
+## [1.0.5] - 2025-08-08
+### Added - Vicky
+- Developer signup page - Step 2 (GitHub and LeetCode URLs)
+- URL validation using regex patterns
+- GitHub URL format validation
+- LeetCode URL format validation
+
+## [1.0.6] - 2025-08-12
+### Added - Sunil
+- GitHub API integration
+- LeetCode GraphQL API integration
+- Fetch repository statistics from GitHub
+- Fetch coding statistics from LeetCode
+- API response parsing and data normalization
+
+## [1.0.7] - 2025-08-15
+### Added - Vicky & Sunil
+- Developer signup page - Step 3 (profile review)
+- Real-time GitHub data display
+- Real-time LeetCode data display
+- Profile creation with parsed resume data
+- Auto-login after successful signup
+
+## [1.0.8] - 2025-08-17
 ### Added - Mayuresh
 - Validation for developer/recruiter login to check if user exists in DB
 - Validation checks in recruiter signup form
 - QOL file `db_viewer` to better view DB contents
+- Error handling for invalid credentials
 
-## [1.0.2] - 2025-08-18
+## [1.0.9] - 2025-08-18
 ### Added - Sunil
 - After signup redirect developer and recruiter to the login page
+- Success messages for registration completion
+- Email uniqueness validation
 
+## [1.1.0] - 2025-08-20
+### Added - Vicky
+- Recruiter signup page with single-step process
+- Company and industry information collection
+- Unique username generation for recruiter profiles
+- Recruiter authentication flow
 
-### [1.0.3] - 2025-08-19
-developer - john@gmail.com password- John#123
-recruiter - sunil3@gmail.com  password- Password123
+## [1.1.1] - 2025-08-22
+### Added - Aashna
+- Developer dashboard template
+- GitHub statistics visualization
+- LeetCode statistics visualization
+- Profile strength calculation
+
+## [1.1.2] - 2025-08-25
+### Added - Aashna & Sunil
+- Advanced GitHub data processing
+- Language distribution calculation
+- Top repositories selection
+- Contributions and activity metrics
+- Activity level labeling (Excellent, Good, Fair)
+
+## [1.1.3] - 2025-08-27
+### Added - Aashna
+- LeetCode rating system integration
+- Contest ranking display
+- Recent submissions visualization with difficulty badges
+- Problem categories analysis
+- Performance level labeling
+
+## [1.1.4] - 2025-08-29
+### Added - Sunil
+- Job model creation (title, type, location, salary, requirements)
+- Application model with status tracking
+- Job posting functionality for recruiters
+- Unique application constraint (prevent duplicates)
+
+## [1.2.0] - 2025-09-01
+### Added - Sunil
+- JobMatchingAI class - Core AI matching engine
+- Skill matching algorithm with weighted scoring
+- Experience level classification system
+- Multi-factor scoring algorithm (skills, experience, location, salary)
+
+## [1.2.1] - 2025-09-03
+### Added - Mubina
+- Context-aware skill detection for resume parsing
+- Fuzzy skill matching with similarity scores
+- Skill category weights for different job types
+
+## [1.2.2] - 2025-09-06
+### Added - Mubina & Sunil
+- Job category determination from job titles
+- Weighted skill importance by job category
+- Experience years extraction from text
+- Location compatibility scoring
+- Salary compatibility calculation
+
+## [1.2.3] - 2025-09-08
+### Added - Mubina
+- Comprehensive match score calculation
+- Match quality categorization (Excellent, Good, Fair, Poor)
+- Matched skills identification
+- Missing skills detection for skill gap analysis
+
+## [1.3.0] - 2025-09-10
+### Added - Aashna & Sunil
+- Developer job search page with AI recommendations
+- Job listing sorted by match score
+- Job categorization (Excellent, Good, Fair, Potential matches)
+- Top 20 job recommendations display
+- User statistics on job search page
+
+## [1.3.1] - 2025-09-12
+### Added - Aashna
+- Job application functionality for developers
+- Duplicate application prevention
+- AJAX-based application submission
+- Application status initialization
+- Success/error notifications
+
+## [1.3.2] - 2025-09-15
+### Added - Aashna & Sunil
+- "My Applications" page for developers
+- Real-time AI match analysis for applications
+- Application status tracking with color-coded badges
+- Match score breakdown display
+- Profile analysis scores integration
+
+## [1.3.3] - 2025-09-17
+### Added - Aashna
+- GitHub and LeetCode data integration in applications view
+- Profile scores calculation (code quality, activity, project complexity)
+- Problem-solving and algorithmic thinking metrics
+- Average match score statistics
+- Technical score aggregation
+
+## [1.4.0] - 2025-09-20
+### Added - Aashna & Sunil
+- Recruiter dashboard with job statistics
+- Total jobs and published jobs count
+- Total applications metrics
+- Average applications per job calculation
+- Per-job application status breakdown
+
+## [1.4.1] - 2025-09-22
+### Added - Sunil
+- All candidates view for recruiters
+- AI-powered candidate ranking by match score
+- Candidate profile summaries with top skills
+- Application status statistics panel
+- Candidate list sorted by match quality
+
+## [1.4.2] - 2025-09-25
+### Added - Sunil
+- Candidate detail view with comprehensive profile
+- Detailed match analysis display
+- GitHub and LeetCode statistics for candidates
+- Resume download functionality
+- Application timeline visualization
+
+## [1.4.3] - 2025-09-27
+### Added - Aashna & Sunil
+- Application status update functionality
+- Status change workflow (applied → under_review → interview → hired/rejected)
+- Internal notes system for recruiters
+- AJAX status updates with notifications
+- Status display name mapping
+
+## [1.4.4] - 2025-09-28
+### Added - Aashna
+- Job-specific applications view for recruiters
+- Applications filtered by specific job
+- AI ranking of candidates per job
+- Job application statistics
+- Side-by-side candidate comparison
+
+## [1.5.0] - 2025-09-30
+### Added - Sunil
+- Skills stored in DeveloperProfile as JSONField
+- Resume data persistence in database
+- Parsed resume data utilization in matching
+- Enhanced profile completion tracking
+- Job requirements as JSON arrays
+
+            FEATURE SUMMARY BY CONTRIBUTOR
+
+MAYURESH:
+  • AI Resume Parser development
+  • NLP integration with spaCy
+  • Skills extraction algorithms
+  • Technical and soft skills databases
+  • Login/signup validation
+  • Database viewer utility
+
+SUNIL:
+  • User authentication system
+  • GitHub and LeetCode API integration
+  • Job matching AI core development
+  • Multi-factor scoring algorithms
+  • Application status management
+  • GitHub/LeetCode statistics visualization
+  • Database models and relationships
+  • Skill matching with weighted scoring
+  • Job relevance calculation
+  • Skill gap analysis
+
+VICKY:
+  • Developer signup forms (all 3 steps)
+  • Form validation and error handling
+  • Recruiter signup page
+  • URL validation (GitHub/LeetCode)
+
+AASHNA:
+  • Developer dashboard UI
+  • Recruiter dashboard UI
+  • Applications tracking system
+  • Candidate management views
+  • Application status tracking
+
+MUBINA:
+  • JobMatchingAI algorithm refinement
+  • Fuzzy matching implementation
+  • Experience level classification
+  • Session management for signup flow
+
+                                    END OF VERSION HISTORY
