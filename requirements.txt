@@ -7,6 +7,8 @@ Django==5.1.1
 requests>=2.28.0
 PyPDF2>=3.0.0
 spacy>=3.0.0
+PyMuPDF>=1.24.0
+
 
 # Optional (used conceptually in resume parsing logic but not imported):
 # pandas>=2.0.0
